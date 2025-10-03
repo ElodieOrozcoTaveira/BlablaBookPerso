@@ -1,0 +1,115 @@
+@use '../../styles/Variables/variables.scss';
+@use '../../styles/Mixins/mixins.scss';
+
+.section-container {
+  display: flex;
+  flex-direction: row;
+  margin-top: 3rem;
+  gap: 1rem;
+  justify-content: flex-start;
+  align-items: flex-start; // aligne le haut des deux parties
+  &__left{
+    margin-left: 20rem;
+    margin-right: 10rem;
+  }
+  &__cover {
+    height: 500px;
+    width: 500px;
+    border-radius: 15px;
+    margin-right: 3rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+
+  }
+
+  &__right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; // aligne le contenu en haut
+    min-width: 350px;
+  }
+
+  &__title {
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #442020;
+    
+  }
+  &__author{
+    font-size: 20px;
+    margin-bottom: 3rem;
+    color: #442020;
+
+  }
+  &__description{
+     background: variables.$white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+    
+  }
+  &__btn{
+        @include mixins.button(primary);
+    margin-bottom: 2rem;
+    font-family: 'Quintessential', serif;
+  }
+}
+
+.article-container{
+  margin: 4rem auto 3rem auto;
+  display: flex;
+  flex-direction: column;
+  width: 75%;
+  border: grey 1px solid;
+  border-radius: 10px;
+  padding: 3rem;
+  background-color: variables.$primary-color;
+  &__input{
+      padding: 1rem;
+      border-radius: 8px 0 0 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      width: 75%;
+      height: 48px; // hauteur fixe pour l'input
+      box-sizing: border-box;
+  }
+  &__label{
+    color: variables.$secondary-color;
+    font-size: 20px;
+  }
+  &__input-group {
+    display: flex;
+    align-items: center;
+    margin-top: 0.5rem;
+  }
+  &__comment-btn {
+     padding: 0 1.2rem;
+    border-radius: 0 8px 8px 0;
+    border: none;
+    background: variables.$secondary-color;
+    color: #fff;
+    font-size: 1.3rem;
+    cursor: pointer;
+    margin-left: -1px;
+    height: 48px; // même hauteur que l'input
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+}
+
+
+ 
+
+
+    
