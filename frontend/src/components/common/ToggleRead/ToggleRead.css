@@ -1,0 +1,20 @@
+.toggle-read-btn {
+  padding: 5px 5px;
+  font-size: 16px;
+  color: #442020;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.toggle-read-btn input[type=checkbox] {
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+}
+
+.toggle-read-btn.read {
+  color: #2ecc40;
+}/*# sourceMappingURL=ToggleRead.css.map */

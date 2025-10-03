@@ -1,0 +1,218 @@
+@use '../../styles/Variables/variables.scss';
+@use '../../styles/Mixins/mixins.scss';
+
+.mybooks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: variables.$gap-lg;
+  padding: variables.$gap-xl;
+  max-width: variables.$desktop;
+  margin: variables.$gap-xl auto 0;
+
+  @include mixins.tablet {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: variables.$gap-md;
+    padding: variables.$gap-lg;
+  }
+
+  @include mixins.mobile {
+    grid-template-columns: 1fr;
+    gap: variables.$gap-md;
+    padding: variables.$gap-md;
+  }
+}
+
+.mybooks-grid__item {
+  background: variables.$white;
+  border-radius: variables.$border-radius-md;
+  padding: variables.$gap-lg;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  transition: variables.$transition-fast;
+  border: 2px solid transparent;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(207, 167, 105, 0.15);
+    border-color: rgba(variables.$primary-color, 0.2);
+  }
+
+  &:focus-visible {
+    outline: 2px solid variables.$primary-color;
+    outline-offset: 2px;
+  }
+}
+
+.mybooks-grid__header {
+  @include mixins.flex-center;
+  grid-column: 1 / -1;
+  background: linear-gradient(
+    135deg,
+    rgba(variables.$primary-color, 0.1),
+    rgba(variables.$primary-color, 0.05)
+  );
+  border: 2px dashed rgba(variables.$primary-color, 0.3);
+  color: variables.$primary-color;
+  font-size: 2.5rem;
+  font-weight: bold;
+  padding: variables.$gap-lg variables.$gap-xl;
+  border-radius: variables.$border-radius-md;
+  box-shadow: 0 8px 24px rgba(207, 167, 105, 0.2);
+  margin: calc(variables.$gap-xl * 2) 0 variables.$gap-lg 0;
+  text-align: center;
+  gap: variables.$gap-md;
+  cursor: pointer;
+
+  &:hover {
+    background: linear-gradient(
+      135deg,
+      rgba(variables.$primary-color, 0.15),
+      rgba(variables.$primary-color, 0.08)
+    );
+    border-color: variables.$primary-color;
+    box-shadow: 0 12px 36px rgba(207, 167, 105, 0.3);
+    transform: translateY(-4px);
+  }
+
+  @include mixins.mobile {
+    font-size: 2rem;
+    padding: variables.$gap-md variables.$gap-lg;
+    margin-top: variables.$gap-xl;
+  }
+}
+
+
+
+.book-cover {
+  width: 120px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: variables.$border-radius-sm;
+  margin-bottom: variables.$gap-md;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: variables.$transition-fast;
+
+  .mybooks-grid__item:hover & {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.book-info {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.book-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: variables.$gap-sm 0 0.2rem 0;
+  color: variables.$brown-color;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
+    'Lucida Sans', Arial, sans-serif;
+}
+
+.book-author {
+  font-size: 0.95rem;
+  color: variables.$text-color;
+  margin-bottom: 0.2rem;
+}
+
+.book-rating {
+  font-size: 0.95rem;
+  color: #667eea;
+}
+
+.delete-book-btn {
+  position: absolute;
+  top: variables.$gap-sm;
+  right: variables.$gap-sm;
+  background: rgba(variables.$brown-color, 0.8);
+  color: variables.$white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  @include mixins.flex-center;
+  cursor: pointer;
+  transition: variables.$transition-fast;
+  opacity: 0;
+  transform: scale(0.8);
+
+  .mybooks-grid__item:hover & {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  &:hover {
+    background: variables.$brown-color;
+    transform: scale(1.1);
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.mesLivres-trash {
+  position: absolute;
+  top: variables.$gap-md;
+  right: variables.$gap-md;
+  background: rgba(variables.$brown-color, 0.8);
+  color: variables.$white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: scale(0.8);
+
+  .mesLivres-list:hover & {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  &:hover {
+    background-color: variables.$brown-color;
+    transform: scale(1.1);
+  }
+}
+
+.toggle-read-btn {
+  padding: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #333;
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: variables.$border-radius-sm;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  &.read {
+    color: #2ecc40;
+    font-weight: bold;
+    background-color: rgba(46, 204, 64, 0.1);
+  }
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  &:focus-visible {
+    outline: 2px solid variables.$primary-color;
+    outline-offset: 2px;
+  }
+}
+

@@ -1,0 +1,13 @@
+.container-bibliothèque {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.container-bibliothèque__nav {
+  display: flex;
+  gap: 2rem; // espace horizontal entre chaque lien
+  align-items: center;
+  font-size: 22px;
+  text-shadow: 2px 2px 3px whitesmoke;
+}

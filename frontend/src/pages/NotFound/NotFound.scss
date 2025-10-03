@@ -1,0 +1,61 @@
+// NotFound.scss
+@use '../../styles/Variables/_variables.scss' as *;
+@use '../../styles/Mixins/_mixins.scss' as *;
+
+.not-found {
+  min-height: calc(100vh - #{$header-height} - 80px);
+  background: $background;
+  @include flex-center;
+  padding: $gap-xl;
+
+  &__container {
+    text-align: center;
+    max-width: 500px;
+    padding: $gap-xl;
+    background: $white;
+    border-radius: $border-radius-md;
+    box-shadow: 0 4px 20px rgba($primary-color, 0.1);
+  }
+
+  &__icon {
+    font-size: 4rem;
+    margin-bottom: $gap-lg;
+  }
+
+  &__code {
+    font-size: 3rem;
+    font-weight: bold;
+    color: $primary-color;
+    margin-bottom: $gap-sm;
+  }
+
+  &__title {
+    font-size: 1.5rem;
+    color: $title-color;
+    margin-bottom: $gap-md;
+  }
+
+  &__message {
+    color: $text-color;
+    margin-bottom: $gap-xl;
+    line-height: 1.5;
+  }
+
+  &__actions {
+    @include flex-center;
+    gap: $gap-md;
+
+    @include mobile {
+      flex-direction: column;
+    }
+  }
+
+  &__btn {
+    @include button(outline);
+    text-decoration: none;
+
+    &--primary {
+      @include button(primary);
+    }
+  }
+}

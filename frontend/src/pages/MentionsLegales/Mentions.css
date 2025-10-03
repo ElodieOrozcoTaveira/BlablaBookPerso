@@ -1,0 +1,30 @@
+.mentions {
+  margin: 5rem 5rem 10rem 5rem;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 18px;
+}
+
+.mentions-h1 {
+  font-family: "Quintessential", serif;
+  color: #442020;
+}
+
+.mentions-update {
+  color: #442020;
+  margin-bottom: 2rem;
+}
+
+.mentions-h2 {
+  margin-bottom: 2rem;
+  color: #cfa769;
+  text-decoration: underline;
+}
+
+p {
+  margin-bottom: 2rem;
+}
+
+.mail {
+  color: #442020;
+  font-weight: bold;
+}/*# sourceMappingURL=Mentions.css.map */

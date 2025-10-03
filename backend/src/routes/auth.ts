@@ -1,0 +1,271 @@
+import { Router } from 'express';
+import { Request, Response } from 'express';
+import argon2 from 'argon2';
+import rateLimit from 'express-rate-limit';
+import sequelize from '../config/database.js';
+import { QueryTypes } from 'sequelize';
+import User from '../models/User.js';
+import Role from '../models/Role.js';
+import Permission from '../models/Permission.js';
+import { isAuthenticatedSession } from '../types/session.js';
+import { TypedRequest, AuthenticatedRequest } from '../types/express.js';
+import { createAuthenticatedSession, destroySession } from '../middleware/session.js';
+import { requirePermission, requireAdmin, requireUserManagement } from '../middleware/permission.js';
+import { generateCSRFToken } from '../middleware/csrf.js';
+
+const router = Router();
+
+console.log('Auth routes module loaded successfully');
+
+// Route pour obtenir le token CSRF (GET public)
+router.get('/csrf-token', (req: Request, res: Response) => {
+    try {
+        const token = generateCSRFToken(req, res);
+        res.json({
+            success: true,
+            csrfToken: token,
+            message: 'CSRF token generated'
+        });
+    } catch (error) {
+        console.error('CSRF token generation error', error);
+        res.status(500).json({
+            success: false,
+            error: 'Unable to generate CSRF token'
+        });
+    }
+});
+
+// Rate limiting specifique pour les tentatives de login
+const loginRateLimit = rateLimit({
+    windowMs: process.env.NODE_ENV === 'test' ? 1 * 60 * 1000 : 15 * 60 * 1000,
+    max: process.env.NODE_ENV === 'test' ? 1000 : 5,
+    message: {
+        error: 'Too many login attempts',
+        message: process.env.NODE_ENV === 'test' ? 'Please try again in 1 minute' : 'Please try again in 15 minutes',
+        retryAfter: process.env.NODE_ENV === 'test' ? 1 * 60 : 15 * 60
+    },
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+
+// Types pour les requetes
+interface LoginRequest {
+    email: string;
+    password: string;
+}
+
+// POST /api/auth/login
+router.post('/login', loginRateLimit, async (req: TypedRequest<LoginRequest>, res: Response) => {
+    try {
+        const { email, password } = req.body;
+
+        // Validation basique
+        if (!email || !password) {
+            return res.status(400).json({
+                error: 'Missing credentials',
+                message: 'Email and password are required'
+            });
+        }
+
+        // Chercher l'utilisateur
+        const user = await User.findOne({
+            where: { email: email.toLowerCase() }
+        });
+
+        if (!user) {
+            return res.status(401).json({
+                error: 'Invalid credentials',
+                message: 'Email or password incorrect'
+            });
+        }
+
+        // Verifier le mot de passe
+        const validPassword = await argon2.verify(user.password, password);
+
+        if (!validPassword) {
+            return res.status(401).json({
+                error: 'Invalid credentials',
+                message: 'Email or password incorrect'
+            });
+        }
+
+        // S'assurer que la session existe
+        if (!req.session) {
+            return res.status(500).json({
+                error: 'Session error',
+                message: 'Unable to create session'
+            });
+        }
+
+        // Creer nouvelle session via utilitaire
+        createAuthenticatedSession(req, {
+            id_user: user.id_user,
+            email: user.email,
+            username: user.username
+        });
+
+        res.json({
+            success: true,
+            message: 'Login successful',
+            user: {
+                id: user.id_user,
+                email: user.email,
+                username: user.username
+            }
+        });
+
+    } catch (error) {
+        console.error('Login error', error);
+        res.status(500).json({
+            error: 'Login failed',
+            message: 'Unable to process login request'
+        });
+    }
+});
+
+// POST /api/auth/logout
+router.post('/logout', async (req: Request, res: Response) => {
+    try {
+        const userEmail = req.session?.email;
+
+        await destroySession(req);
+        res.clearCookie('blablabook.sid');
+
+        if (userEmail) {
+            console.log('[AUTH] User logged out', userEmail);
+        }
+
+        res.json({
+            success: true,
+            message: 'Logout successful'
+        });
+    } catch (error) {
+        console.error('Logout error', error);
+        res.status(500).json({
+            error: 'Logout failed',
+            message: 'Unable to process logout request'
+        });
+    }
+});
+
+// GET /api/auth/me
+router.get('/me', (req: Request, res: Response) => {
+    try {
+        if (req.session && isAuthenticatedSession(req.session)) {
+            // Mettre a jour l'activite
+            req.session.lastActivity = new Date();
+
+            res.json({
+                success: true,
+                authenticated: true,
+                user: {
+                    id: req.session.userId,
+                    email: req.session.email,
+                    username: req.session.username
+                },
+                session: {
+                    loginTime: req.session.loginTime,
+                    lastActivity: req.session.lastActivity
+                }
+            });
+        } else {
+            res.json({
+                success: true,
+                authenticated: false,
+                user: null
+            });
+        }
+    } catch (error) {
+        console.error('Session check error', error);
+        res.status(500).json({
+            error: 'Session check failed',
+            message: 'Unable to verify session status'
+        });
+    }
+});
+
+// Endpoint debug temporaire pour tester les associations Sequelize
+router.get('/debug/permissions', async (req: Request, res: Response) => {
+    try {
+        if (!req.session?.isAuthenticated || !req.session?.userId) {
+            return res.status(401).json({ error: 'Not authenticated' });
+        }
+
+        const userId = req.session.userId;
+        console.log('[DEBUG] Testing Sequelize associations for user', userId);
+
+        const user = await User.findByPk(userId);
+
+        if (user) {
+            // Etape 1: Recuperer les roles
+            const userRoles = await (user as any).getRoles();
+            console.log('[DEBUG] User roles', userRoles?.length);
+
+            // Etape 2: Pour chaque role, recuperer ses permissions
+            const rolesWithPermissions = [];
+
+            for (const role of userRoles || []) {
+                const rolePermissions = await (role as any).getPermissions();
+
+
+                rolesWithPermissions.push({
+                    id: role.id_role,
+                    name: role.name,
+                    permissionsCount: rolePermissions?.length || 0,
+                    permissions: rolePermissions?.map((p: any) => p.label) || []
+                });
+            }
+
+            const result = {
+                userId,
+                username: user.username,
+                rolesCount: userRoles?.length || 0,
+                roles: rolesWithPermissions
+            };
+
+            res.json({
+                success: true,
+                debug: result
+            });
+        } else {
+            res.json({ success: false, error: 'User not found' });
+        }
+
+    } catch (error) {
+        console.error('Debug permissions error', error);
+        res.status(500).json({
+            error: 'Debug failed',
+            details: error instanceof Error ? error.message : 'Unknown error'
+        });
+    }
+});
+
+// Routes de test des permissions - a supprimer en production
+router.get('/test/admin', requireAdmin, (req: AuthenticatedRequest, res: Response) => {
+    res.json({
+        success: true,
+        message: 'Acces admin autorise',
+        user: req.session?.email,
+        permissions: req.userPermissions
+    });
+});
+
+router.get('/test/user-management', requireUserManagement, (req: AuthenticatedRequest, res: Response) => {
+    res.json({
+        success: true,
+        message: 'Acces gestion utilisateurs autorise',
+        user: req.session?.email,
+        permissions: req.userPermissions
+    });
+});
+
+router.get('/test/multiple-permissions', requirePermission(['CREATE', 'UPDATE']), (req: AuthenticatedRequest, res: Response) => {
+    res.json({
+        success: true,
+        message: 'Acces CREATE et UPDATE autorise',
+        user: req.session?.email,
+        permissions: req.userPermissions
+    });
+});
+
+export default router;
