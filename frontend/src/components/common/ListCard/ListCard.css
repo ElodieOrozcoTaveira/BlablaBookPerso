@@ -1,0 +1,50 @@
+.list-card {
+  background: #ffffff;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  max-width: 300px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+}
+.list-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+.list-card h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #999999;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+.list-card .description {
+  color: #cccccc;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+.list-card .list-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid hsl(36.4705882353, 51.5151515152%, 101.1764705882%);
+  padding-top: 1rem;
+}
+.list-card .book-count {
+  background: rgb(250.2727272727, 246.3333333333, 240.2272727273);
+  color: rgb(194.6363636364, 144.3333333333, 66.3636363636);
+  padding: 0.3rem 0.8rem;
+  border-radius: 1rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+.list-card .username {
+  font-size: 0.9rem;
+  color: rgb(229.5, 229.5, 229.5);
+  font-style: italic;
+}/*# sourceMappingURL=ListCard.css.map */

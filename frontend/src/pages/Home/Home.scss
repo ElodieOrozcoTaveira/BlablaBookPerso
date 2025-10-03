@@ -1,0 +1,191 @@
+@use 'sass:color';
+@use '../../styles/Variables/variables.scss';
+
+.home {
+  padding: 0;
+
+  &__hero {
+    background: linear-gradient(
+      135deg,
+      variables.$primary-color 0%,
+      color.adjust(variables.$primary-color, variables.$lightness: -15%) 100%
+    );
+    color: variables.$white;
+    text-align: center;
+    padding: 4rem 2rem;
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+  }
+
+  &__section {
+    padding: 4rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+
+    &:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      height: 3px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        color.adjust(variables.$primary-color, variables.$lightness: 30%),
+        transparent
+      );
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 2.5rem;
+      color: variables.$text-color;
+      margin-bottom: 3rem;
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: -1rem;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 3rem;
+        height: 3px;
+        background: variables.$primary-color;
+        border-radius: 2px;
+      }
+    }
+  }
+}
+
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  justify-items: center;
+}
+
+.section-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+  padding-top: 2rem;
+}
+
+.see-all-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: linear-gradient(
+    135deg,
+    variables.$primary-color,
+    color.adjust(variables.$primary-color, $lightness: -10%)
+  );
+  color: variables.$white;
+  text-decoration: none;
+  border-radius: 2rem;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(variables.$primary-color, 0.3);
+
+  &::after {
+    content: '→';
+    margin-left: 0.5rem;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(variables.$primary-color, 0.4);
+
+    &::after {
+      transform: translateX(4px);
+    }
+  }
+}
+
+.home-header{
+    background-color: rgba(variables.$secondary-color, 0.3);
+    block-size: 674px;    //hauteur et inline-size=largeur
+    position: relative;   
+    z-index: 1; /*z-index controle l'ordre d'empilement des élements positionnés sur 
+    l'axe z (profondeur). z index joue avec la position*/
+    overflow: hidden;    //permet de cacher ce qu'il va dépasser 
+    display: flex;
+    align-items: center;
+    font-family: 'Quintessential', serif;
+
+    &__faded-bg{
+        position: absolute;
+        z-index: -1;
+        left: 0;
+        bottom: 0;
+        inline-size: 50%;
+        block-size: 100%;
+        background-color: variables.$home-color;
+        box-shadow: 0 0 100px 200px variables.$home-color;
+        padding-block-start: 0;
+  }
+    &__openbook{
+        width:100% ;
+        position: absolute;
+        z-index: -2;
+        right: 0;
+        top: 0;
+        inline-size: 50%;
+        block-size: 100%;
+        object-fit: cover;
+        filter: sepia(0.8) hue-rotate(3deg) saturate(0.8) brightness(0.95);
+        border-bottom: 5px solid #CBA469;
+
+    &::after {
+        content: "";
+        position: absolute;
+        left: -60px; // déborde sur la couleur faded
+        top: 0;
+        width: 80px; // largeur du fondu
+        height: 100%;
+        background: linear-gradient(
+          to left,
+          transparent 0%,
+          variables.$home-color 100%
+        );
+        filter: blur(40px); // effet de flou/fondu
+        pointer-events: none;
+        z-index: 2;
+  }
+        
+      }
+     &__subtitle{
+        color: variables.$secondary-color;
+        font-weight: 300;
+        margin-left: 15rem;     
+        font-size: 35px;  
+        text-shadow: #442020 2px 2px 3px;
+ 
+
+    }
+    &__title{
+        font-size: 50px;
+        margin-block-end: 24px;
+        color: variables.$secondary-color;
+        margin-left: 15rem;        
+        text-transform: uppercase;
+        text-shadow: #442020 2px 2px 3px;
+}
+}

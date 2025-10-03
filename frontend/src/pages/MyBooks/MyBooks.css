@@ -1,0 +1,82 @@
+.mybooks-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  padding: 2rem;
+  border-bottom: #f2e5d0 solid 3px;
+  padding-bottom: 8rem;
+  justify-content: center;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  justify-items: center;
+}
+
+.mybooks-grid__item {
+  background: #f2e5d0;
+  border-radius: 10px;
+  height: 300px;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  justify-content: center;
+}
+
+.mybooks-grid__header {
+  font-size: 40px;
+  background-color: #cfa769;
+  color: #f2e5d0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-right: 4px solid #333333;
+  border-bottom: 4px solid #333333;
+  padding: 3rem 2rem;
+}
+
+.book-cover {
+  width: 120px;
+  height: 180px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.book-cover:hover {
+  opacity: 1;
+}
+
+.book-info {
+  margin-bottom: 1rem;
+}
+
+.book-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin: 0.5rem 0 0.2rem 0;
+}
+
+.book-author {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 0.2rem;
+}
+
+.book-rating {
+  font-size: 0.95rem;
+  color: #667eea;
+}
+
+.delete-book-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #333333;
+}/*# sourceMappingURL=MyBooks.css.map */

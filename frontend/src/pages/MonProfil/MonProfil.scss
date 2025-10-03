@@ -1,0 +1,77 @@
+@use '../../styles/Variables/variables.scss';
+@use '../../styles/Mixins/mixins.scss';
+
+.MonProfil{
+    text-align: center;
+    color: variables.$gray-dark;
+    font-size: 2rem;
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 3px variables.$black-light;
+    color:variables.$primary-color;
+    
+}
+
+.image_profile{
+    display: block;
+    margin: auto;
+    margin-bottom: 2rem;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid variables.$primary-color;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+.container-informations{
+    display: block;
+    margin: auto;
+    background: variables.$white;
+    padding: variables.$gap-xl * 1.5;
+    border-radius: variables.$border-radius-md;
+    box-shadow: 0 0.5rem 2rem rgba(44, 44, 44, 0.1);
+    width: 100%;
+    max-width: 500px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(207, 167, 105, 0.1);
+    margin-bottom: 3rem;
+}
+
+.informations_profil{
+   margin-bottom: variables.$gap-lg;
+
+      label {
+        display: block;
+        margin-bottom: variables.$gap-sm;
+        color: variables.$title-color;
+        font-weight: 500;
+        font-size: variables.$font-size-sm;
+      }
+
+      input {
+        width: 100%;
+        padding: variables.$gap-sm variables.$gap-md;
+        border: 2px solid rgba(207, 167, 105, 0.2);
+        border-radius: variables.$border-radius-sm;
+        font-size: 1rem;
+        transition: variables.$transition-fast;
+        box-sizing: border-box;
+        background: rgba(254, 251, 246, 0.5);
+      }
+}
+
+.btn{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+&__retour{
+    @include mixins.button(primary);
+}
+&__confirmer{
+    @include mixins.button(outline);
+
+}
+}

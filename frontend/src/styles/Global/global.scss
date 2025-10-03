@@ -1,0 +1,34 @@
+//import des styles
+@use '../Variables/variables.scss';
+@use '../Mixins/mixins.scss';
+//import fonts
+
+
+// le global est comme le reset
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+        
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(255, 246, 231);
+
+}
+
+main,
+.main-content {
+  flex: 1;
+}
+
+
+body {
+  margin: 0;
+  font-family: 'Quintessential';
+  padding: 0;
+}
