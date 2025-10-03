@@ -1,0 +1,66 @@
+@use '../../styles/Variables/_variables.scss' as vars;
+@use '../../styles/Mixins/mixins.scss' as mixins;
+
+.mesLivres-grid {
+  max-width: vars.$desktop;
+  margin: 0 auto;
+  padding: vars.$gap-xl;
+  margin-top: vars.$gap-xl * 2;
+
+  @include mixins.tablet {
+    padding: vars.$gap-lg;
+  }
+
+  @include mixins.mobile {
+    padding: vars.$gap-md;
+  }
+
+  .mesLivres-h2 {
+    font-size: 2.5rem;
+    color: vars.$brown-color;
+    text-align: center;
+    margin-bottom: vars.$gap-xl * 2;
+    font-weight: bold;
+
+    @include mixins.mobile {
+      font-size: 2rem;
+      margin-bottom: vars.$gap-xl;
+    }
+  }
+
+  .empty-library {
+    text-align: center;
+    padding: vars.$gap-xl * 3;
+    color: vars.$text-color;
+
+    h3 {
+      font-size: 1.5rem;
+      color: vars.$brown-color;
+      margin-bottom: vars.$gap-md;
+    }
+
+    p {
+      font-size: vars.$font-size-lg;
+      margin-bottom: vars.$gap-xl;
+    }
+  }
+
+  .mesLivres-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: vars.$gap-xl;
+
+    @include mixins.tablet {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: vars.$gap-lg;
+    }
+
+    @include mixins.mobile {
+      grid-template-columns: 1fr;
+      gap: vars.$gap-md;
+    }
+
+    // Les BookCard héritent de leurs propres styles
+    // On peut ajouter des overrides spécifiques à MesLivres si nécessaire
+  }
+}
