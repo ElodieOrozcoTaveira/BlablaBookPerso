@@ -1,0 +1,27 @@
+@use '../../../styles/Variables/variables.scss';
+@use '../../../styles/Mixins/mixins.scss';
+
+
+.container-libraryNav{
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 10vh;
+}
+
+.container-nav{
+    display: flex;
+    gap: 2rem;
+&__links{
+    font-size: variables.$font-size-lg;
+    @include mixins.nav-link;
+    border: variables.$primary-color solid 2px;
+    margin-top: 2rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    box-shadow: 3px 3px 8px variables.$primary-color;
+    
+}
+}

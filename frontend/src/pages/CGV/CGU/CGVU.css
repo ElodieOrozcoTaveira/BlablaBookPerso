@@ -1,0 +1,34 @@
+.CGVU {
+  margin: 5rem 5rem 10rem 5rem;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 18px;
+}
+
+.cgvu-h1 {
+  font-family: "Quintessential", serif;
+  color: #442020;
+}
+
+.cgvu-h2 {
+  margin-bottom: 2rem;
+  color: #cfa769;
+  text-decoration: underline;
+}
+
+.cgvu-update {
+  color: #442020;
+  margin-bottom: 2rem;
+}
+
+p {
+  margin-bottom: 2rem;
+}
+
+ul {
+  margin-bottom: 2rem;
+}
+
+.cgvu-mail {
+  color: #442020;
+  font-weight: bold;
+}/*# sourceMappingURL=CGVU.css.map */

@@ -1,0 +1,99 @@
+@charset "UTF-8";
+.home-header {
+  background-color: #f2e5d0;
+  block-size: 674px;
+  position: relative;
+  z-index: 1; /*z-index controle l'ordre d'empilement des élements positionnés sur 
+l'axe z (profondeur). z index joue avec la position*/
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  font-family: "Quintessential", serif;
+}
+.home-header__faded-bg {
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  bottom: 0;
+  inline-size: 50%;
+  block-size: 100%;
+  background-color: #CBA469;
+  box-shadow: 0 0 100px 200px #CBA469;
+  padding-block-start: 0;
+}
+.home-header__openbook {
+  width: 100%;
+  position: absolute;
+  z-index: -2;
+  right: 0;
+  top: 0;
+  inline-size: 50%;
+  block-size: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  filter: sepia(0.8) hue-rotate(3deg) saturate(0.8) brightness(0.95);
+  border-bottom: 5px solid #CBA469;
+}
+.home-header__openbook::after {
+  content: "";
+  position: absolute;
+  left: -60px;
+  top: 0;
+  width: 80px;
+  height: 100%;
+  background: linear-gradient(to left, transparent 0%, #CBA469 100%);
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 2;
+}
+.home-header__subtitle {
+  color: #f2e5d0;
+  font-weight: 300;
+  margin-left: 15rem;
+  font-size: 35px;
+  text-shadow: #442020 2px 2px 3px;
+}
+.home-header__title {
+  font-size: 50px;
+  margin-block-end: 24px;
+  color: #f2e5d0;
+  margin-left: 15rem;
+  text-transform: uppercase;
+  text-shadow: #442020 2px 2px 3px;
+}
+
+@media (max-width: 700px) {
+  .home-header {
+    block-size: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem 1rem;
+  }
+  .home-header__faded-bg {
+    inline-size: 100%;
+    block-size: 50%;
+    box-shadow: 0 0 60px 100px #CBA469;
+  }
+  .home-header__openbook {
+    position: relative;
+    inline-size: 100%;
+    block-size: 200px;
+    -o-object-fit: cover;
+       object-fit: cover;
+    border-bottom: 3px solid #CBA469;
+  }
+  .home-header__openbook::after {
+    display: none;
+  }
+  .home-header__title {
+    font-size: 32px;
+    margin-left: 0;
+    margin-block-end: 16px;
+    text-align: left;
+  }
+  .home-header__subtitle {
+    font-size: 20px;
+    margin-left: 0;
+    text-align: left;
+  }
+}/*# sourceMappingURL=HomeHeader.css.map */
