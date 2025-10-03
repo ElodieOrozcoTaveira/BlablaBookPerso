@@ -1,0 +1,122 @@
+.MonProfil {
+  text-align: center;
+  color: #333333;
+  font-size: 2rem;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1);
+  color: #cfa769;
+}
+
+.image_profile {
+  display: block;
+  margin: auto;
+  margin-bottom: 2rem;
+  width: 120px;
+  height: 120px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #cfa769;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+
+.container-informations {
+  display: block;
+  margin: auto;
+  background: #ffffff;
+  padding: 3rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 0.5rem 2rem rgba(44, 44, 44, 0.1);
+  width: 100%;
+  max-width: 500px;
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  border: 1px solid rgba(207, 167, 105, 0.1);
+  margin-bottom: 3rem;
+}
+
+.informations_profil {
+  margin-bottom: 1.5rem;
+}
+.informations_profil label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #2c2c2c;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+.informations_profil input {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 2px solid rgba(207, 167, 105, 0.2);
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-sizing: border-box;
+  background: rgba(254, 251, 246, 0.5);
+}
+.informations_profil input.editing {
+  border-color: rgba(207, 167, 105, 0.5);
+  background: rgba(255, 255, 255, 0.9);
+}
+.informations_profil input.editing:focus {
+  outline: none;
+  border-color: #cfa769;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(207, 167, 105, 0.1);
+}
+.informations_profil input.readonly-field {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  color: #6c757d;
+  cursor: not-allowed;
+  border: 2px solid #dee2e6;
+  opacity: 0.75;
+}
+.informations_profil input.readonly-field:hover {
+  background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+}
+
+.btn {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.btn__retour {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(135deg, #cfa769, #b8956a);
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 0.25rem 0.5rem rgba(207, 167, 105, 0.3);
+}
+.btn__retour:hover {
+  transform: translateY(-0.125rem);
+  box-shadow: 0 0.5rem 1rem rgba(207, 167, 105, 0.4);
+}
+.btn__confirmer {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(207, 167, 105, 0.1);
+  color: #cfa769;
+  border: 0.125rem solid rgba(207, 167, 105, 0.3);
+}
+.btn__confirmer:hover {
+  background: rgba(207, 167, 105, 0.2);
+  transform: translateY(-0.125rem);
+  box-shadow: 0 0.5rem 1rem rgba(207, 167, 105, 0.2);
+}/*# sourceMappingURL=MonProfil.css.map */
