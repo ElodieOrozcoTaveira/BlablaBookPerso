@@ -1,0 +1,59 @@
+@use 'sass:color';
+@use '../../../styles/Variables/_variables.scss' as *;
+
+.list-card {
+  background: $white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  max-width: 300px;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  }
+
+  h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: $text-color;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+  }
+
+  .description {
+    color: color.adjust($text-color, $lightness: 20%);
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+  }
+
+  .list-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid color.adjust($primary-color, $lightness: 40%);
+    padding-top: 1rem;
+  }
+
+  .book-count {
+    background: color.adjust($primary-color, $lightness: 35%);
+    color: color.adjust($primary-color, $lightness: -10%);
+    padding: 0.3rem 0.8rem;
+    border-radius: 1rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  .username {
+    font-size: 0.9rem;
+    color: color.adjust($text-color, $lightness: 30%);
+    font-style: italic;
+  }
+}
