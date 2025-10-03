@@ -1,0 +1,8 @@
+{
+    "editor.fontFamily": "Operator Mono Lig",
+    "editor.fontSize": 16,
+    "editor.fontLigatures": true, // Active les ligatures
+    "editor.fontVariations": true,
+    "editor.wordWrap": "on",
+    "terminal.integrated.fontFamily": "monospace"
+}
