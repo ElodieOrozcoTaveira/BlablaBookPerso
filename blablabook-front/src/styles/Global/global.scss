@@ -1,0 +1,25 @@
+@use '../Variables/variables.scss';
+@use "../../components/layout/Footer/Footer.scss";
+@use "../../components/common/SearchBar/SearchBar.scss";
+
+// le global est comme le reset
+
+*{
+    margin: 0;
+    padding: 0;
+    
+    
+}
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main,
+.main-content {
+  flex: 1;
+}
+
+

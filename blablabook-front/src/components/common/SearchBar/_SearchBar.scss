@@ -1,0 +1,19 @@
+.searchbar{
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    
+}
+
+.searchbar__input{
+    margin-top: 2rem;
+    padding: 1rem;
+    width: 100vh;
+    border-radius: 30px;
+}
+
+button{
+    height: 50px;
+    width: 50px;
+    margin-top: 2rem;
+}
