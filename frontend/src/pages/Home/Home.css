@@ -1,0 +1,97 @@
+@charset "UTF-8";
+.home {
+  padding: 0;
+  margin-top: 3rem;
+}
+.home__hero {
+  background: linear-gradient(135deg, #cfa769 0%, rgb(178.4090909091, 130.8333333333, 57.0909090909) 100%);
+  color: #ffffff;
+  text-align: center;
+  padding: 4rem 2rem;
+}
+.home__hero h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+.home__hero p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.home__section {
+  padding: 4rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
+.home__section:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, rgb(244.0909090909, 235, 220.9090909091), transparent);
+}
+.home__section h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #999999;
+  margin-bottom: 3rem;
+  position: relative;
+}
+.home__section h2::before {
+  content: "";
+  position: absolute;
+  top: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3rem;
+  height: 3px;
+  background: #cfa769;
+  border-radius: 2px;
+}
+
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  justify-items: center;
+}
+
+.section-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+  padding-top: 2rem;
+}
+
+.see-all-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #cfa769, rgb(194.6363636364, 144.3333333333, 66.3636363636));
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 2rem;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(207, 167, 105, 0.3);
+}
+.see-all-link::after {
+  content: "→";
+  margin-left: 0.5rem;
+  transition: transform 0.3s ease;
+}
+.see-all-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(207, 167, 105, 0.4);
+}
+.see-all-link:hover::after {
+  transform: translateX(4px);
+}/*# sourceMappingURL=Home.css.map */

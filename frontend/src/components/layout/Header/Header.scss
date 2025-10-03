@@ -1,0 +1,196 @@
+@use '../../../styles/Variables/_variables.scss' as variables;
+@use '../../../styles/Mixins/_mixins.scss' as mixins;
+
+.header {
+  background-color: variables.$white;
+  box-shadow: 0 0.125rem 0.25rem variables.$black-light;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100vw;
+
+  &__container {
+    padding: 0 variables.$gap-xl;
+    height: variables.$header-height;
+    width: 100%;
+    @include mixins.flex-center($justify: space-between);
+  }
+
+  &__logo {
+    flex: 0 0 auto;
+    @include mixins.flex-center($justify: flex-start, $gap: variables.$gap-sm);
+
+    img {
+      height: variables.$header-height;
+      width: auto;
+      object-fit: contain;
+    }
+  }
+
+  &__nav {
+    flex: 1;
+    @include mixins.flex-center();
+
+    ul {
+      @include mixins.flex-center($gap: variables.$gap-xl);
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      li {
+        a {
+          @include mixins.nav-link;
+        }
+      }
+    }
+  }
+
+  &__auth {
+    flex: 0 0 auto;
+    @include mixins.flex-center($justify: flex-end, $gap: variables.$gap-lg);
+
+    .btn-login {
+      @include mixins.button(outline);
+    }
+
+    .btn-register {
+      @include mixins.button(primary);
+    }
+
+    & .btn-login,
+    & .btn-register {
+      box-sizing: border-box;
+      white-space: nowrap;
+      text-align: center;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+
+  &__burger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 2rem;
+    height: 2rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+
+    span {
+      display: block;
+      width: 1.5rem;
+      height: 0.125rem;
+      background: variables.$primary-color;
+      margin: 0.125rem 0;
+      transition: all 0.3s ease;
+      transform-origin: center;
+
+      &:nth-child(1) {
+        transform: translateY(0);
+      }
+
+      &:nth-child(2) {
+        opacity: 1;
+      }
+
+      &:nth-child(3) {
+        transform: translateY(0);
+      }
+    }
+  }
+
+  @include mixins.tablet {
+    &__nav {
+      ul {
+        gap: variables.$gap-md;
+
+        li {
+          a {
+            padding: 0.4rem 0.6rem;
+            font-size: 1rem;
+          }
+        }
+      }
+    }
+
+    &__auth {
+      gap: variables.$gap-md;
+
+      button {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.85rem;
+      }
+    }
+  }
+
+  @include mixins.mobile {
+    &__container {
+      padding: 0 variables.$gap-md;
+      height: 4rem;
+      justify-content: space-between;
+    }
+
+    &__logo {
+      flex: 0 0 auto;
+
+      img {
+        height: 3rem;
+      }
+    }
+
+    &__burger {
+      display: flex;
+      order: 2;
+    }
+
+    &__nav {
+      position: fixed;
+      top: 4rem;
+      left: -100%;
+      width: 100%;
+      height: calc(100vh - 4rem);
+      background: variables.$white;
+      transition: left 0.3s ease;
+      z-index: 999;
+
+      &--open {
+        left: 0;
+      }
+
+      ul {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: variables.$gap-xl;
+        gap: variables.$gap-lg;
+
+        li {
+          width: 100%;
+
+          a {
+            display: block;
+            width: 100%;
+            padding: variables.$gap-md;
+            font-size: 1.2rem;
+            border-bottom: 1px solid rgba(variables.$primary-color, 0.2);
+          }
+        }
+      }
+    }
+
+    &__auth {
+      flex: 0 0 auto;
+      gap: variables.$gap-sm;
+      order: 3;
+
+      button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+        white-space: nowrap;
+      }
+    }
+  }
+}
+
