@@ -1,0 +1,189 @@
+@use '../../styles/Variables/_variables.scss' as variables;
+@use '../../styles/Mixins/_mixins.scss' as mixins;
+@use 'sass:math';
+@use 'sass:color';
+
+.login {
+  min-height: calc(100vh - variables.$header-height * 2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: variables.$gap-xl variables.$gap-md;
+  background-color: variables.$background;
+
+  &__container {
+    background: variables.$white;
+    padding: variables.$gap-xl * 1.5;
+    border-radius: variables.$border-radius-md;
+    box-shadow: 0 0.5rem 2rem rgba(44, 44, 44, 0.1);
+    width: 100%;
+    max-width: 400px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(207, 167, 105, 0.1);
+  }
+
+  &__header {
+    text-align: center;
+    margin-bottom: variables.$gap-xl;
+
+    h1 {
+      color: variables.$title-color;
+      margin-bottom: variables.$gap-sm;
+      font-size: 2rem;
+      font-weight: 600;
+    }
+
+    p {
+      color: variables.$text-color;
+      font-size: variables.$font-size-sm;
+      line-height: 1.4;
+    }
+  }
+
+  &__form {
+    .form-group {
+      margin-bottom: variables.$gap-lg;
+
+      label {
+        display: block;
+        margin-bottom: variables.$gap-sm;
+        color: variables.$title-color;
+        font-weight: 500;
+        font-size: variables.$font-size-sm;
+      }
+
+      input {
+        width: 100%;
+        padding: variables.$gap-sm variables.$gap-md;
+        border: 2px solid rgba(207, 167, 105, 0.2);
+        border-radius: variables.$border-radius-sm;
+        font-size: 1rem;
+        transition: variables.$transition-fast;
+        box-sizing: border-box;
+        background: rgba(254, 251, 246, 0.5);
+
+        &:focus {
+          outline: none;
+          border-color: variables.$primary-color;
+          box-shadow: 0 0 0 3px rgba(207, 167, 105, 0.1);
+          background: variables.$white;
+        }
+
+        &.error {
+          border-color: #e74c3c;
+          background: rgba(231, 76, 60, 0.05);
+
+          &:focus {
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+          }
+        }
+
+        &:disabled {
+          background-color: rgba(153, 153, 153, 0.1);
+          cursor: not-allowed;
+          opacity: 0.7;
+        }
+
+        &::placeholder {
+          color: variables.$text-color;
+        }
+      }
+
+      .error-message {
+        display: block;
+        color: #e74c3c;
+        font-size: 0.85rem;
+        margin-top: math.div(variables.$gap-sm, 2);
+        font-weight: 500;
+      }
+    }
+  }
+
+  &__button {
+    @include mixins.button(primary);
+    width: 100%;
+    margin-top: variables.$gap-md;
+    font-size: 1rem;
+    padding: variables.$gap-md;
+
+    &:disabled {
+      background: linear-gradient(
+        135deg,
+        variables.$text-color,
+        color.adjust(variables.$text-color, $lightness: 10%)
+      );
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+      opacity: 0.6;
+    }
+  }
+
+  &__footer {
+    text-align: center;
+    margin-top: variables.$gap-xl;
+    padding-top: variables.$gap-lg;
+    border-top: 1px solid rgba(207, 167, 105, 0.2);
+
+    p {
+      margin-bottom: variables.$gap-md;
+      color: variables.$text-color;
+      font-size: variables.$font-size-sm;
+    }
+  }
+
+  &__link {
+    color: variables.$primary-color;
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: variables.$gap-sm;
+    transition: variables.$transition-fast;
+
+    &:hover {
+      color: color.adjust(variables.$primary-color, $lightness: -10%);
+      text-decoration: underline;
+    }
+  }
+}
+
+// Responsive design
+@include mixins.tablet {
+  .login {
+    padding: variables.$gap-md;
+    min-height: calc(100vh - variables.$header-height);
+
+    &__container {
+      padding: variables.$gap-xl variables.$gap-lg;
+      margin: 0 auto;
+    }
+
+    &__header {
+      h1 {
+        font-size: 1.75rem;
+      }
+    }
+  }
+}
+
+@include mixins.mobile {
+  .login {
+    &__container {
+      padding: variables.$gap-lg variables.$gap-md;
+    }
+
+    &__header {
+      margin-bottom: variables.$gap-lg;
+
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+
+    &__form {
+      .form-group {
+        margin-bottom: variables.$gap-md;
+      }
+    }
+  }
+}

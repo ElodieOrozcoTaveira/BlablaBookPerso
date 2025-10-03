@@ -1,0 +1,61 @@
+.lists-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  padding: 2rem;
+  border-bottom: #f2e5d0 solid 3px;
+  padding-bottom: 8rem;
+  justify-content: center;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  justify-items: center;
+  margin-top: 5rem;
+}
+
+.lists-grid__item {
+  background: #f2e5d0;
+  border-radius: 10px;
+  height: 300px;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  justify-content: center;
+}
+
+.list-owner {
+  display: block;
+  margin-top: 1rem;
+  color: #333333;
+}
+
+.lists-grid__header {
+  font-size: 40px;
+  background-color: #cfa769;
+  color: #f2e5d0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border-right: 4px solid #333333;
+  border-bottom: 4px solid #333333;
+  padding: 3rem 2rem;
+}
+
+.list-cover {
+  width: 120px;
+  height: 180px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.list-name {
+  font-size: 20px;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial;
+  font-weight: bold;
+  margin: 0.5rem 0 0.2rem 0;
+  color: #442020;
+}/*# sourceMappingURL=MyLists.css.map */

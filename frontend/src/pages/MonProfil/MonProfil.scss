@@ -1,0 +1,143 @@
+@use '../../styles/Variables/variables.scss';
+@use '../../styles/Mixins/mixins.scss';
+
+.MonProfil {
+  text-align: center;
+  color: variables.$gray-dark;
+  font-size: 2rem;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 3px variables.$black-light;
+  color: variables.$primary-color;
+}
+
+.image_profile {
+  display: block;
+  margin: auto;
+  margin-bottom: 2rem;
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid variables.$primary-color;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+
+.container-informations {
+  display: block;
+  margin: auto;
+  background: variables.$white;
+  padding: variables.$gap-xl * 1.5;
+  border-radius: variables.$border-radius-md;
+  box-shadow: 0 0.5rem 2rem rgba(44, 44, 44, 0.1);
+  width: 100%;
+  max-width: 500px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(207, 167, 105, 0.1);
+  margin-bottom: 3rem;
+}
+
+.informations_profil {
+  margin-bottom: variables.$gap-lg;
+
+  label {
+    display: block;
+    margin-bottom: variables.$gap-sm;
+    color: variables.$title-color;
+    font-weight: 500;
+    font-size: variables.$font-size-sm;
+  }
+
+  input {
+    width: 100%;
+    padding: variables.$gap-sm variables.$gap-md;
+    border: 2px solid rgba(207, 167, 105, 0.2);
+    border-radius: variables.$border-radius-sm;
+    font-size: 1rem;
+    transition: variables.$transition-fast;
+    box-sizing: border-box;
+    background: rgba(254, 251, 246, 0.5);
+
+    // Style pour les champs modifiables (nouveau comportement)
+    &.editable-field {
+      cursor: text;
+
+      &:hover {
+        border-color: rgba(207, 167, 105, 0.4);
+        background: rgba(255, 255, 255, 0.7);
+      }
+
+      &:focus {
+        outline: none;
+        border-color: variables.$primary-color;
+        background: variables.$white;
+        box-shadow: 0 0 0 3px rgba(207, 167, 105, 0.1);
+      }
+    }
+
+    // Style pour le champ email non-modifiable
+    &.readonly-field {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      color: #6c757d;
+      cursor: not-allowed;
+      border: 2px solid #dee2e6;
+      opacity: 0.75;
+
+      &:hover {
+        background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+      }
+    }
+  }
+}
+
+.btn-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: variables.$gap-lg;
+
+  .btn-save-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .btn-danger-container {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.btn__save {
+  @include mixins.button(outline);
+  background: linear-gradient(135deg, variables.$primary-color, #b8956a);
+  color: variables.$white;
+  border: none;
+
+  &:hover {
+    background: linear-gradient(135deg, #b8956a, variables.$primary-color);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.btn__delete {
+  @include mixins.button(danger);
+  background: linear-gradient(135deg, #dc3545, #c82333);
+  color: variables.$white;
+  border: none;
+
+  &:hover {
+    background: linear-gradient(135deg, #c82333, #bd2130);
+    transform: translateY(-0.125rem);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
