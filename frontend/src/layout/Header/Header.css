@@ -1,0 +1,74 @@
+.header {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100vw;
+}
+.header__container {
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  height: 70px;
+  width: 100%;
+}
+.header__logo {
+  flex: 0 0 auto;
+}
+.header__logo h1 {
+  color: #646cff;
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+.header__nav {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+.header__nav ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 2rem;
+}
+.header__nav ul li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+.header__nav ul li a:hover {
+  color: #646cff;
+}
+.header__auth {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 1rem;
+}
+.header__auth button {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.header__auth button.btn-login {
+  background: transparent;
+  color: #646cff;
+  border: 1px solid #646cff;
+}
+.header__auth button.btn-login:hover {
+  background: #646cff;
+  color: white;
+}
+.header__auth button.btn-register {
+  background: #646cff;
+  color: white;
+}
+.header__auth button.btn-register:hover {
+  background: #535bf2;
+}/*# sourceMappingURL=Header.css.map */
