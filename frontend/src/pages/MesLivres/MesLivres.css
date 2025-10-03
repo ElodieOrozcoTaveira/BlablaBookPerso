@@ -1,0 +1,54 @@
+.mesLivres-h2 {
+  margin-top: 5rem;
+  margin-left: 15rem;
+  font-size: 3rem;
+  font-family: "Quintessential", serif;
+  color: #442020;
+}
+
+.mesLivres-list {
+  background: #ffffff;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+  width: 100%;
+  max-width: 300px;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+}
+
+.mesLivres-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5rem;
+  margin: 3rem 10rem 5rem 10rem;
+}
+
+.mesLivres-cover {
+  margin-top: 2rem;
+  height: 200px;
+  width: 150px;
+  margin-bottom: 2rem;
+  border-radius: 10px;
+  border: 2px solid #cfa769;
+}
+
+.mesLivres-title {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  color: #333333;
+}
+
+.mesLivres-authors {
+  font-weight: bold;
+  color: #cfa769;
+}
+
+.mesLivres-trash {
+  font-size: 20px;
+  text-align: right;
+}/*# sourceMappingURL=MesLivres.css.map */
