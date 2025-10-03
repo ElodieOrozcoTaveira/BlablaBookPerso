@@ -1,0 +1,15 @@
+@charset "UTF-8";
+.container-bibliothèque {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.container-bibliothèque__nav {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  font-size: 22px;
+  margin-bottom: 4rem;
+  text-shadow: 2px 2px 3px whitesmoke;
+}/*# sourceMappingURL=NavBar.css.map */

@@ -1,0 +1,112 @@
+@use '../../../styles/Variables/variables.scss';
+
+.home-header{
+    background-color: variables.$secondary-color;
+    block-size: 674px;    //hauteur et inline-size=largeur
+    position: relative;   
+    z-index: 1; /*z-index controle l'ordre d'empilement des élements positionnés sur 
+    l'axe z (profondeur). z index joue avec la position*/
+    overflow: hidden;    //permet de cacher ce qu'il va dépasser 
+    display: flex;
+    align-items: center;
+    font-family: 'Quintessential', serif;
+
+    &__faded-bg{
+        position: absolute;
+        z-index: -1;
+        left: 0;
+        bottom: 0;
+        inline-size: 50%;
+        block-size: 100%;
+        background-color: variables.$home-color;
+        box-shadow: 0 0 100px 200px variables.$home-color;
+        padding-block-start: 0;
+  }
+    &__openbook{
+        width:100% ;
+        position: absolute;
+        z-index: -2;
+        right: 0;
+        top: 0;
+        inline-size: 50%;
+        block-size: 100%;
+        object-fit: cover;
+        filter: sepia(0.8) hue-rotate(3deg) saturate(0.8) brightness(0.95);
+        border-bottom: 5px solid #CBA469;
+
+    &::after {
+        content: "";
+        position: absolute;
+        left: -60px; // déborde sur la couleur faded
+        top: 0;
+        width: 80px; // largeur du fondu
+        height: 100%;
+        background: linear-gradient(
+          to left,
+          transparent 0%,
+          variables.$home-color 100%
+        );
+        filter: blur(40px); // effet de flou/fondu
+        pointer-events: none;
+        z-index: 2;
+  }
+        
+      }
+     &__subtitle{
+        color: variables.$secondary-color;
+        font-weight: 300;
+        margin-left: 15rem;     
+        font-size: 35px;  
+        text-shadow: #442020 2px 2px 3px;
+ 
+
+    }
+    &__title{
+        font-size: 50px;
+        margin-block-end: 24px;
+        color: variables.$secondary-color;
+        margin-left: 15rem;        
+        text-transform: uppercase;
+        text-shadow: #442020 2px 2px 3px;
+}
+}
+//Responsive home-header
+@media (max-width: 700px) {
+  .home-header {
+    block-size: auto; // Hauteur adaptative
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem 1rem;
+
+    &__faded-bg {
+      inline-size: 100%;
+      block-size: 50%;
+      box-shadow: 0 0 60px 100px variables.$home-color;
+    }
+
+    &__openbook {
+      position: relative;
+      inline-size: 100%;
+      block-size: 200px;
+      object-fit: cover;
+      border-bottom: 3px solid #CBA469;
+
+      &::after {
+        display: none; // Supprime le fondu sur mobile
+      }
+    }
+
+    &__title {
+      font-size: 32px;
+      margin-left: 0;
+      margin-block-end: 16px;
+      text-align: left;
+    }
+
+    &__subtitle {
+      font-size: 20px;
+      margin-left: 0;
+      text-align: left;
+    }
+  }
+}
