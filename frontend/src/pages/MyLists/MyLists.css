@@ -1,0 +1,210 @@
+.my-lists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 2rem auto 0;
+}
+@media (max-width: 1024px) {
+  .my-lists-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+    padding: 1.5rem;
+  }
+}
+@media (max-width: 768px) {
+  .my-lists-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+  }
+}
+
+.my-lists-grid__header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  grid-column: 1/-1;
+  background: linear-gradient(135deg, rgba(207, 167, 105, 0.1), rgba(207, 167, 105, 0.05));
+  border: 2px dashed rgba(207, 167, 105, 0.3);
+  color: #cfa769;
+  font-size: 2.5rem;
+  font-weight: bold;
+  padding: 1.5rem 2rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 8px 24px rgba(207, 167, 105, 0.2);
+  margin: 4rem 0 1.5rem 0;
+  text-align: center;
+  gap: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.my-lists-grid__header:hover {
+  background: linear-gradient(135deg, rgba(207, 167, 105, 0.15), rgba(207, 167, 105, 0.08));
+  border-color: #cfa769;
+  box-shadow: 0 12px 36px rgba(207, 167, 105, 0.3);
+  transform: translateY(-4px);
+}
+@media (max-width: 768px) {
+  .my-lists-grid__header {
+    font-size: 2rem;
+    padding: 1rem 1.5rem;
+    margin-top: 2rem;
+  }
+}
+
+.my-lists-grid__create-new-list {
+  background-color: #cfa769;
+  border: 2px dashed rgba(207, 167, 105, 0.3);
+  color: #cfa769;
+  font-size: 2.5rem;
+  font-weight: bold;
+  padding: 1.5rem 2rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 8px 24px rgba(207, 167, 105, 0.2);
+  text-align: center;
+  justify-content: center;
+}
+
+.my-lists-grid__create-new-list {
+  background-color: #cfa769;
+}
+
+.my-lists-grid__empty-state {
+  grid-column: 1/-1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  flex-direction: column;
+  padding: 4rem;
+  text-align: center;
+  color: #999999;
+  font-size: 1.1rem;
+}
+
+.my-lists-grid__create-btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(135deg, #cfa769, #b8956a);
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 0.25rem 0.5rem rgba(207, 167, 105, 0.3);
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  padding: 1rem 2rem;
+}
+.my-lists-grid__create-btn:hover {
+  transform: translateY(-0.125rem);
+  box-shadow: 0 0.5rem 1rem rgba(207, 167, 105, 0.4);
+}
+.my-lists-grid__create-btn svg {
+  margin-right: 0.5rem;
+}
+
+.my-lists-grid__item {
+  background: #ffffff;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid transparent;
+}
+.my-lists-grid__item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(207, 167, 105, 0.15);
+  border-color: rgba(207, 167, 105, 0.2);
+}
+.my-lists-grid__item:focus-visible {
+  outline: 2px solid #cfa769;
+  outline-offset: 2px;
+}
+
+.my-lists-grid__create-new-list {
+  text-align: center;
+}
+
+.my-lists-grid__item-cover {
+  width: 120px;
+  height: 180px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.my-lists-grid__item:hover .my-lists-grid__item-cover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.my-lists-grid__item-name {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 0.5rem 0 0.2rem 0;
+  color: #442020;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+  text-align: center;
+}
+
+.my-lists-grid__item-description {
+  font-size: 0.9rem;
+  color: #999999;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.my-lists-grid__item-visibility {
+  font-size: 0.8rem;
+  color: #999999;
+  background: rgba(207, 167, 105, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  margin-top: auto;
+  font-weight: 500;
+}
+
+.my-lists-grid__item-delete {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: rgba(68, 32, 32, 0.8);
+  color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  transform: scale(0.8);
+}
+.my-lists-grid__item:hover .my-lists-grid__item-delete {
+  opacity: 1;
+  transform: scale(1);
+}
+.my-lists-grid__item-delete:hover {
+  background: #442020;
+  transform: scale(1.1);
+}
+.my-lists-grid__item-delete svg {
+  width: 16px;
+  height: 16px;
+}/*# sourceMappingURL=MyLists.css.map */

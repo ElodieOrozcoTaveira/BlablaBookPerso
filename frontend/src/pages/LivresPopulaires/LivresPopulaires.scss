@@ -1,0 +1,93 @@
+@use '../../styles/Variables/variables.scss';
+@use '../../styles/Mixins/mixins.scss';
+
+.popular-books-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); // Réduit à 6 par ligne pour plus de largeur
+  gap: 2rem; // Augmenté pour plus d'espace entre les items
+  padding: 2rem; // Valeur directe si variables.$gap-lg ne marche pas
+  max-width: 1400px; // Valeur directe si variables.$desktop ne marche pas
+  margin: 0 auto;
+
+  @include mixins.tablet {
+    grid-template-columns: repeat(3, 1fr); // 3 par ligne sur tablette
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  @include mixins.mobile {
+    grid-template-columns: 1fr; // 1 par ligne sur mobile
+    gap: 1rem;
+    padding: 1rem;
+  }
+}
+
+.popular-books-grid__item {
+  background: #fff; // Valeur directe si variables.$white ne marche pas
+  border-radius: 12px; // Valeur directe si variables.$border-radius-md ne marche pas
+  padding: 1rem; // Valeur directe si variables.$gap-sm ne marche pas
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: box-shadow 0.3s ease;
+
+  &:hover,
+  &:focus-visible {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    outline: none;
+    transform: translateY(-4px);
+  }
+}
+
+.popular-books-grid__cover {
+  width: 100%;
+  height: 280px; // Augmenté de 180px à 280px pour plus de hauteur
+  object-fit: cover;
+  border-radius: 8px; // Valeur directe si variables.$border-radius-sm ne marche pas
+  margin-bottom: 0.75rem; // Valeur directe si variables.$gap-sm ne marche pas
+}
+
+.popular-books-grid__no-cover {
+  width: 100%;
+  height: 280px; // Même hauteur que la couverture
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666; // Valeur directe si variables.$gray-dark ne marche pas
+  font-style: italic;
+  margin-bottom: 0.75rem;
+}
+
+.popular-books-grid__title {
+  font-weight: bold;
+  font-size: 1.1rem; // Légèrement augmenté pour plus d'impact
+  color: #8b4513; // Valeur directe si variables.$brown-color ne marche pas
+  margin-bottom: 0.25rem;
+  text-align: center;
+}
+
+.popular-books-grid__authors {
+  font-size: 0.9rem; // Légèrement augmenté
+  color: #333; // Valeur directe si variables.$text-color ne marche pas
+  text-align: center;
+  margin-bottom: 1rem; // Valeur directe si variables.$gap-sm ne marche pas
+}
+
+.add-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: variables.$primary-color; // Valeur directe si variables.$primary-color ne marche pas
+  font-size: 1.6rem; // Légèrement augmenté
+  transition: color 0.3s ease;
+
+  &:hover,
+  &:focus-visible {
+    color: #0056b3; // Valeur directe pour darken(variables.$primary-color, 15%)
+    outline: none;
+  }
+}

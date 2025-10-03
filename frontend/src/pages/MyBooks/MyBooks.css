@@ -1,0 +1,200 @@
+.mybooks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 2rem auto 0;
+}
+@media (max-width: 1024px) {
+  .mybooks-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+    padding: 1.5rem;
+  }
+}
+@media (max-width: 768px) {
+  .mybooks-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+  }
+}
+
+.mybooks-grid__item {
+  background: #ffffff;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid transparent;
+}
+.mybooks-grid__item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(207, 167, 105, 0.15);
+  border-color: rgba(207, 167, 105, 0.2);
+}
+.mybooks-grid__item:focus-visible {
+  outline: 2px solid #cfa769;
+  outline-offset: 2px;
+}
+
+.mybooks-grid__header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  grid-column: 1/-1;
+  background: linear-gradient(135deg, rgba(207, 167, 105, 0.1), rgba(207, 167, 105, 0.05));
+  border: 2px dashed rgba(207, 167, 105, 0.3);
+  color: #cfa769;
+  font-size: 2.5rem;
+  font-weight: bold;
+  padding: 1.5rem 2rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 8px 24px rgba(207, 167, 105, 0.2);
+  margin: 4rem 0 1.5rem 0;
+  text-align: center;
+  gap: 1rem;
+  cursor: pointer;
+}
+.mybooks-grid__header:hover {
+  background: linear-gradient(135deg, rgba(207, 167, 105, 0.15), rgba(207, 167, 105, 0.08));
+  border-color: #cfa769;
+  box-shadow: 0 12px 36px rgba(207, 167, 105, 0.3);
+  transform: translateY(-4px);
+}
+@media (max-width: 768px) {
+  .mybooks-grid__header {
+    font-size: 2rem;
+    padding: 1rem 1.5rem;
+    margin-top: 2rem;
+  }
+}
+
+.book-cover {
+  width: 120px;
+  height: 180px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.mybooks-grid__item:hover .book-cover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.book-info {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.book-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 0.5rem 0 0.2rem 0;
+  color: #442020;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+}
+
+.book-author {
+  font-size: 0.95rem;
+  color: #999999;
+  margin-bottom: 0.2rem;
+}
+
+.book-rating {
+  font-size: 0.95rem;
+  color: #667eea;
+}
+
+.delete-book-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: rgba(68, 32, 32, 0.8);
+  color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  transform: scale(0.8);
+}
+.mybooks-grid__item:hover .delete-book-btn {
+  opacity: 1;
+  transform: scale(1);
+}
+.delete-book-btn:hover {
+  background: #442020;
+  transform: scale(1.1);
+}
+.delete-book-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.mesLivres-trash {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(68, 32, 32, 0.8);
+  color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: scale(0.8);
+}
+.mesLivres-list:hover .mesLivres-trash {
+  opacity: 1;
+  transform: scale(1);
+}
+.mesLivres-trash:hover {
+  background-color: #442020;
+  transform: scale(1.1);
+}
+
+.toggle-read-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #333;
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.toggle-read-btn.read {
+  color: #2ecc40;
+  font-weight: bold;
+  background-color: rgba(46, 204, 64, 0.1);
+}
+.toggle-read-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.toggle-read-btn:focus-visible {
+  outline: 2px solid #cfa769;
+  outline-offset: 2px;
+}/*# sourceMappingURL=MyBooks.css.map */

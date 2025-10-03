@@ -1,0 +1,133 @@
+@use '../../styles/Variables/variables.scss';
+@use '../../styles/Mixins/mixins.scss';
+
+.mesLivres-h2 {
+  margin: variables.$gap-xl 0;
+  font-size: 2.5rem;
+  font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  color: variables.$primary-color;
+  text-align: center;
+  font-weight: bold;
+  background: linear-gradient(135deg, variables.$primary-color, #b8956a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  user-select: none;
+  padding: variables.$gap-md 0;
+}
+
+
+.mesLivres-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: variables.$gap-xl;
+  padding: variables.$gap-xl;
+  max-width: variables.$desktop;
+  margin: 3rem auto 5rem auto;
+
+  @include mixins.tablet {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: variables.$gap-lg;
+    padding: variables.$gap-lg;
+  }
+
+  @include mixins.mobile {
+    grid-template-columns: 1fr;
+    gap: variables.$gap-md;
+    padding: variables.$gap-md;
+  }
+}
+
+.mesLivres-list {
+  background: variables.$white;
+  border-radius: variables.$border-radius-md;
+  padding: variables.$gap-lg;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  transition: variables.$transition-fast;
+  text-align: center;
+  width: 100%;
+  max-width: 300px;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  border: 2px solid transparent;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(207, 167, 105, 0.15);
+    border-color: rgba(variables.$primary-color, 0.2);
+  }
+
+  &:focus-visible {
+    outline: 2px solid variables.$primary-color;
+    outline-offset: 2px;
+  }
+}
+
+.mesLivres-cover {
+  width: 120px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: variables.$border-radius-sm;
+  margin: 2rem 0 2rem 0;
+  border: 2px solid variables.$primary-color;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: variables.$transition-fast;
+
+  .mesLivres-list:hover & {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.mesLivres-title {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  color: variables.$brown-color;
+  font-weight: bold;
+  font-size: 1.25rem;
+  line-height: 1.3;
+  margin: 0.5rem 0 0.2rem 0;
+  text-align: center;
+}
+
+.mesLivres-authors {
+  font-weight: 600;
+  color: variables.$primary-color;
+  font-size: 0.95rem;
+  margin-bottom: variables.$gap-sm;
+  text-align: center;
+}
+
+.mesLivres-trash {
+  position: absolute;
+  top: variables.$gap-md;
+  right: variables.$gap-md;
+  background: rgba(variables.$brown-color, 0.8);
+  color: variables.$white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: scale(0.8);
+
+  // Affiche au hover du parent conteneur (exemple .mesLivres-list)
+  .mesLivres-list:hover & {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  &:hover {
+    background-color: variables.$brown-color;
+    transform: scale(1.1);
+  }
+}
+

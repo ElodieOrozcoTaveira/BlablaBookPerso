@@ -1,0 +1,124 @@
+@use '../../styles/Variables/variables.scss';
+@use '../../styles/Mixins/mixins.scss';
+
+.details-livre {
+  max-width: 800px; // Réduit depuis variables.$desktop
+  margin: 2rem auto;
+  padding: variables.$gap-md;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  color: variables.$text-color;
+  background: variables.$white;
+  border-radius: variables.$border-radius-md;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+
+  h1 {
+    font-size: 2.2rem;
+    margin-bottom: variables.$gap-md;
+    color: variables.$brown-color;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+    margin-top: variables.$gap-lg;
+    margin-bottom: variables.$gap-sm;
+    color: variables.$primary-color;
+  }
+
+  p {
+    font-size: 1.1rem;
+    margin-bottom: variables.$gap-sm;
+    line-height: 1.6;
+  }
+
+  img {
+    max-width: 250px;
+    width: 100%;
+    border-radius: variables.$border-radius-sm;
+    box-shadow: 0 8px 32px rgba(207, 167, 105, 0.3);
+    margin-bottom: variables.$gap-md;
+    display: block;
+  }
+
+  .debug-info {
+    font-family: monospace;
+    font-size: 1rem;
+    background: #f0f0f0;
+    padding: 10px;
+    margin-bottom: variables.$gap-md;
+  }
+
+  textarea {
+    width: 100%;
+    padding: variables.$gap-sm;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: variables.$border-radius-sm;
+    resize: vertical;
+  }
+
+  button {
+    background-color: variables.$primary-color;
+    border: none;
+    color: white;
+    padding: variables.$gap-sm variables.$gap-md;
+    margin-top: variables.$gap-md;
+    font-size: 1.3rem;
+    border-radius: variables.$border-radius-sm;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover,
+    &:focus-visible {
+      background-color: darken(variables.$primary-color, 10%);
+      outline: none;
+    }
+  }
+
+  .error,
+  .not-found,
+  .loading {
+    text-align: center;
+    padding: variables.$gap-lg;
+    color: variables.$brown-color;
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: variables.$gap-md;
+    }
+
+    p {
+      font-size: 1.5rem;
+    }
+
+    .error-actions {
+      margin-top: variables.$gap-lg;
+
+      button {
+        margin: 0 0.5rem;
+      }
+    }
+  }
+
+  ul {
+    padding-left: 1.25rem;
+    margin-bottom: variables.$gap-md;
+
+    li {
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+      color: variables.$text-color;
+    }
+  }
+
+  span[role='button'] {
+    user-select: none;
+  }
+}
+
+// Image de couverture (hors .details-livre ?)
+.cover-image {
+  height: 300px;
+  width: 300px;
+  display: block;
+  margin: 2rem auto;
+}

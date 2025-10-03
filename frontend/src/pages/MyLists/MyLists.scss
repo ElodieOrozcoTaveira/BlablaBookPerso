@@ -1,0 +1,201 @@
+@use '../../styles/Variables/variables.scss';
+@use '../../styles/Mixins/mixins.scss';
+
+.my-lists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: variables.$gap-lg;
+  padding: variables.$gap-xl;
+  max-width: variables.$desktop;
+  margin: variables.$gap-xl auto 0;
+
+  @include mixins.tablet {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: variables.$gap-md;
+    padding: variables.$gap-lg;
+  }
+
+  @include mixins.mobile {
+    grid-template-columns: 1fr;
+    gap: variables.$gap-md;
+    padding: variables.$gap-md;
+  }
+}
+
+.my-lists-grid__header {
+  @include mixins.flex-center;
+  grid-column: 1 / -1;
+  background: linear-gradient(
+    135deg,
+    rgba(variables.$primary-color, 0.1),
+    rgba(variables.$primary-color, 0.05)
+  );
+  border: 2px dashed rgba(variables.$primary-color, 0.3);
+  color: variables.$primary-color;
+  font-size: 2.5rem;
+  font-weight: bold;
+  padding: variables.$gap-lg variables.$gap-xl;
+  border-radius: variables.$border-radius-md;
+  box-shadow: 0 8px 24px rgba(207, 167, 105, 0.2);
+  margin: calc(variables.$gap-xl * 2) 0 variables.$gap-lg 0;
+  text-align: center;
+  gap: variables.$gap-md;
+  cursor: pointer;
+  transition: all 0.3s ease;
+ 
+  &:hover {
+    background: linear-gradient(
+      135deg,
+      rgba(variables.$primary-color, 0.15),
+      rgba(variables.$primary-color, 0.08)
+    );
+    border-color: variables.$primary-color;
+    box-shadow: 0 12px 36px rgba(207, 167, 105, 0.3);
+    transform: translateY(-4px);
+  }
+
+
+  @include mixins.mobile {
+    font-size: 2rem;
+    padding: variables.$gap-md variables.$gap-lg;
+    margin-top: variables.$gap-xl;
+  }
+}
+
+.my-lists-grid__create-new-list{
+  background-color: variables.$primary-color;
+  border: 2px dashed rgba(variables.$primary-color, 0.3);
+  color: variables.$primary-color;
+  font-size: 2.5rem;
+  font-weight: bold;
+  padding: variables.$gap-lg variables.$gap-xl;
+  border-radius: variables.$border-radius-md;
+  box-shadow: 0 8px 24px rgba(207, 167, 105, 0.2);
+  text-align: center;
+  justify-content: center;
+}
+.my-lists-grid__create-new-list{
+  background-color: variables.$primary-color;
+}
+.my-lists-grid__empty-state {
+  grid-column: 1 / -1;
+  @include mixins.flex-center(center, center, variables.$gap-lg);
+  flex-direction: column;
+  padding: variables.$gap-xl * 2;
+  text-align: center;
+  color: variables.$text-color;
+  font-size: variables.$font-size-lg;
+}
+
+.my-lists-grid__create-btn {
+  @include mixins.button(primary);
+  margin-top: variables.$gap-md;
+  font-size: variables.$font-size-lg;
+  padding: variables.$gap-md variables.$gap-xl;
+
+  svg {
+    margin-right: variables.$gap-sm;
+  }
+}
+
+.my-lists-grid__item {
+  background: variables.$white;
+  border-radius: variables.$border-radius-md;
+  padding: variables.$gap-lg;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  transition: variables.$transition-fast;
+  border: 2px solid transparent;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(207, 167, 105, 0.15);
+    border-color: rgba(variables.$primary-color, 0.2);
+  }
+
+  &:focus-visible {
+    outline: 2px solid variables.$primary-color;
+    outline-offset: 2px;
+  }
+}
+
+.my-lists-grid__create-new-list {
+  text-align: center;
+}
+
+.my-lists-grid__item-cover {
+  width: 120px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: variables.$border-radius-sm;
+  margin-bottom: variables.$gap-md;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: variables.$transition-fast;
+
+  .my-lists-grid__item:hover & {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.my-lists-grid__item-name {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: variables.$gap-sm 0 0.2rem 0;
+  color: variables.$brown-color;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans',
+    Arial, sans-serif;
+  text-align: center;
+}
+
+.my-lists-grid__item-description {
+  font-size: variables.$font-size-sm;
+  color: variables.$text-color;
+  margin-bottom: variables.$gap-sm;
+  text-align: center;
+}
+
+.my-lists-grid__item-visibility {
+  font-size: 0.8rem;
+  color: variables.$text-color;
+  background: rgba(variables.$primary-color, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  margin-top: auto;
+  font-weight: 500;
+}
+
+.my-lists-grid__item-delete {
+  position: absolute;
+  top: variables.$gap-sm;
+  right: variables.$gap-sm;
+  background: rgba(variables.$brown-color, 0.8);
+  color: variables.$white;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  @include mixins.flex-center;
+  cursor: pointer;
+  transition: variables.$transition-fast;
+  opacity: 0;
+  transform: scale(0.8);
+
+  .my-lists-grid__item:hover & {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  &:hover {
+    background: variables.$brown-color;
+    transform: scale(1.1);
+  }
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+}
