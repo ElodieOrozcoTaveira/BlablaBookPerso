@@ -1,0 +1,244 @@
+@use '../../../styles/Variables/_variables.scss' as variables;
+@use '../../../styles/Mixins/_mixins.scss' as mixins;
+@use 'sass:color'; // Import du module color de Sass
+
+.header {
+  background-color: variables.$white;
+  box-shadow: 0 0.125rem 0.25rem variables.$black-light;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100vw;
+  margin-bottom: 1rem;
+
+  &__container {
+    padding: 0 variables.$gap-xl;
+    height: variables.$header-height;
+    width: 100%;
+    @include mixins.flex-center($justify: space-between);
+  }
+
+  &__logo {
+    flex: 0 0 auto;
+    @include mixins.flex-center($justify: flex-start, $gap: variables.$gap-sm);
+
+    img {
+      height: variables.$header-height;
+      width: auto;
+      object-fit: contain;
+    }
+  }
+
+  &__nav {
+    flex: 1;
+    @include mixins.flex-center();
+
+    ul {
+      @include mixins.flex-center($gap: variables.$gap-xl);
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      li {
+        // Styles pour tous les liens de navigation (Link et NavLink)
+        a {
+          @include mixins.nav-link;
+        }
+
+        // Styles spécifiques pour NavLink
+        .nav-link {
+          @include mixins.nav-link;
+          transition: variables.$transition-fast;
+
+          // Style pour le lien actif
+          &--active {
+            color: variables.$primary-color;
+            font-weight: 600;
+
+            &::after {
+              width: 100%; // Soulignement complet pour la page active
+            }
+
+            &::before {
+              opacity: 1;
+              left: calc(100% + 0.1rem); // Plume visible
+            }
+          }
+
+          // Effet hover différent pour le lien actif
+          &--active:hover {
+            color: color.adjust(variables.$primary-color, $lightness: -10%);
+          }
+        }
+      }
+    }
+  }
+
+  &__auth {
+    flex: 0 0 auto;
+    @include mixins.flex-center($justify: flex-end, $gap: variables.$gap-lg);
+
+    .btn-login {
+      @include mixins.button(outline);
+    }
+
+    .btn-register {
+      @include mixins.button(primary);
+    }
+
+    & .btn-login,
+    & .btn-register {
+      box-sizing: border-box;
+      white-space: nowrap;
+      text-align: center;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+
+  &__burger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 2rem;
+    height: 2rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+
+    span {
+      display: block;
+      width: 1.5rem;
+      height: 0.125rem;
+      background: variables.$primary-color;
+      margin: 0.125rem 0;
+      transition: all 0.3s ease;
+      transform-origin: center;
+
+      &:nth-child(1) {
+        transform: translateY(0);
+      }
+
+      &:nth-child(2) {
+        opacity: 1;
+      }
+
+      &:nth-child(3) {
+        transform: translateY(0);
+      }
+    }
+  }
+
+  // Responsive - Tablet
+  @include mixins.tablet {
+    &__nav {
+      ul {
+        gap: variables.$gap-md;
+
+        li {
+          a,
+          .nav-link {
+            padding: 0.4rem 0.6rem;
+            font-size: 1rem;
+          }
+        }
+      }
+    }
+
+    &__auth {
+      gap: variables.$gap-md;
+
+      button {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.85rem;
+      }
+    }
+  }
+
+  // Responsive - Mobile
+  @include mixins.mobile {
+    &__container {
+      padding: 0 variables.$gap-md;
+      height: 4rem;
+      justify-content: space-between;
+    }
+
+    &__logo {
+      flex: 0 0 auto;
+
+      img {
+        height: 3rem;
+      }
+    }
+
+    &__burger {
+      display: flex;
+      order: 2;
+    }
+
+    &__nav {
+      position: fixed;
+      top: 4rem;
+      left: -100%;
+      width: 100%;
+      height: calc(100vh - 4rem);
+      background: variables.$white;
+      transition: left 0.3s ease;
+      z-index: 999;
+
+      &--open {
+        left: 0;
+      }
+
+      ul {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: variables.$gap-xl;
+        gap: variables.$gap-lg;
+
+        li {
+          width: 100%;
+
+          a,
+          .nav-link {
+            display: block;
+            width: 100%;
+            padding: variables.$gap-md;
+            font-size: 1.2rem;
+            border-bottom: 1px solid rgba(variables.$primary-color, 0.2);
+          }
+
+          // Style spécial pour NavLink actif sur mobile
+          .nav-link--active {
+            background-color: rgba(variables.$primary-color, 0.1);
+            border-left: 3px solid variables.$primary-color;
+          }
+        }
+      }
+    }
+
+    &__auth {
+      flex: 0 0 auto;
+      gap: variables.$gap-sm;
+      order: 3;
+
+      button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+        white-space: nowrap;
+      }
+    }
+  }
+}
+
+// Cache les boutons d'auth sur très petits écrans
+@media (max-width: 700px) {
+  .header__auth {
+    .btn-login,
+    .btn-register {
+      display: none;
+    }
+  }
+}

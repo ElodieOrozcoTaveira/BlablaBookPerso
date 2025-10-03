@@ -1,0 +1,72 @@
+@use '../../styles/Variables/variables.scss';
+
+.biblioH1 {
+  text-align: center;
+  color: variables.$gray-dark;
+  margin-bottom: 3rem;
+  margin-top: 2rem;
+}
+
+.container-bibliothèque {
+  h1 {
+    text-align: center;
+    color: variables.$gray-dark;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 3px variables.$gray-dark;
+    color:variables.$primary-color;
+  }
+}
+
+.profils {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+  max-height: 350px;
+  overflow-y: auto;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.profil {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px variables.$primary-color;
+  padding: 1.5rem 1rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+  width: 180px;
+  gap: 1rem;
+
+  &:hover {
+    transform: translateY(-5px) scale(1.04);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    background-color: variables.$primary-color;
+  }
+
+  .image-profil {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid variables.$primary-color;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .profil-name {
+    font-size: 18px;
+    font-weight: 500;
+    color: variables.$text-color;
+    text-align: center;
+    letter-spacing: 0.5px;
+    &:hover{
+        color: variables.$secondary-color;
+    }
+  }
+}

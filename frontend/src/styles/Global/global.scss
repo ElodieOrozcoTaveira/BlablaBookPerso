@@ -1,0 +1,35 @@
+//import des styles
+@use '../Variables/variables.scss';
+@use '../Mixins/mixins.scss';
+//import fonts
+
+
+// le global est comme le reset
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+        
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #FEFBF6;
+
+}
+
+main,
+.main-content {
+  flex: 1;
+}
+
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+    sans-serif;
+  padding: 0;
+}
