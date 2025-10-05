@@ -105,6 +105,7 @@ CREATE TABLE LIBRARY (
 CREATE TABLE READING_LIST (
     id_reading_list INT PRIMARY KEY AUTO_INCREMENT,
     id_library INT NOT NULL,
+    id_user INT NOT NULL,
     name VARCHAR(200) NOT NULL,
     description TEXT NULL,
     genre VARCHAR(100) NULL COMMENT 'Catégorie thématique de la liste',
