@@ -19,6 +19,9 @@ Genre.init(
     sequelize: sequelize,
     modelName: "Genre",
     tableName: "GENRE",
+    timestamps: true,
+    createdAt: "created_at",
+    updatedAt: "updated_at",
     comment: "Classification des genres littéraires",
   }
 );

@@ -1,3 +1,5 @@
+@use "sass:color";
+
 //import des styles
 @use '../Variables/variables.scss';
 @use '../Mixins/mixins.scss';
@@ -29,7 +31,7 @@ main,
 
 body {
   margin: 0;
-  font-family: 'Quintessential';
+  font-family: 'Poppins';
   padding: 0;
   overflow-x: hidden;
 }

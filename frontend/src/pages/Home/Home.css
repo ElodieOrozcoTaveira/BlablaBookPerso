@@ -31,7 +31,7 @@
   -o-object-fit: cover;
      object-fit: cover;
   filter: sepia(0.8) hue-rotate(3deg) saturate(0.8) brightness(0.95);
-  border-bottom: 5px solid #CBA469;
+  border-bottom: 5px solid #cba469;
 }
 .home-header__openbook::after {
   content: "";
@@ -80,7 +80,7 @@
     block-size: 200px;
     -o-object-fit: cover;
        object-fit: cover;
-    border-bottom: 3px solid #CBA469;
+    border-bottom: 3px solid #cba469;
   }
   .home-header__openbook::after {
     display: none; /* Supprime le fondu sur mobile */
@@ -211,6 +211,7 @@
   padding: 1rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
 }
 .books-carousel__item:hover {
   transform: translateY(-4px);
@@ -253,6 +254,52 @@
   color: #888;
   font-size: 0.75rem;
   text-align: center;
+  margin-bottom: 1rem;
+}
+
+.book-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+.book-actions .action-btn {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 1.1rem;
+}
+.book-actions .action-btn:hover {
+  transform: translateY(-2px);
+}
+.book-actions .action-btn--primary {
+  background: #cfa769;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(207, 167, 105, 0.3);
+}
+.book-actions .action-btn--primary:hover {
+  background: #b8956a;
+  box-shadow: 0 4px 12px rgba(207, 167, 105, 0.4);
+}
+.book-actions .action-btn--secondary {
+  background: #ffffff;
+  color: #442020;
+  border: 2px solid rgba(68, 32, 32, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.book-actions .action-btn--secondary:hover {
+  background: rgba(68, 32, 32, 0.05);
+  border-color: #442020;
+  box-shadow: 0 4px 12px rgba(68, 32, 32, 0.15);
 }
 
 .carousel-btn {
@@ -322,6 +369,11 @@
     height: 35px;
     font-size: 1.2rem;
   }
+  .book-actions .action-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
 }
 @media (max-width: 480px) {
   .books-carousel__item {
@@ -335,6 +387,12 @@
   align-items: center;
   gap: 3rem;
 }
+@media (max-width: 768px) {
+  .books-grid {
+    flex-direction: column;
+    gap: 2rem;
+  }
+}
 
 .username {
   color: #cfa769;
@@ -346,5 +404,12 @@
   border-radius: 5px;
   height: 50px;
   width: 50px;
-  cursor: auto;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+.add-btn:hover {
+  background-color: #442020;
+  color: #ffffff;
+  transform: scale(1.05);
 }/*# sourceMappingURL=Home.css.map */

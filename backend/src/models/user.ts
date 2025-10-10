@@ -46,6 +46,10 @@ User.init(
     // Active le soft delete (deletedAt), supprime pas définitivement, au cas ou que l'user veut restaurer un livre, liste, compte
     paranoid: true,
     comment: "Comptes utilisateurs avec authentification Argon2",
+    // Configuration des noms de colonnes pour correspondre à la BDD
+    createdAt: "created_at",
+    updatedAt: "updated_at",
+    deletedAt: "deletedAt", // La BDD utilise camelCase pour cette colonne
   }
 );
 

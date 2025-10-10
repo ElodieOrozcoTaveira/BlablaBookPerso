@@ -1,0 +1,200 @@
+.add-to-list-modal .book-preview {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: rgba(207, 167, 105, 0.05);
+  border-radius: 0.75rem;
+  margin-bottom: 2rem;
+}
+.add-to-list-modal .book-preview__cover {
+  width: 60px;
+  height: 90px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+.add-to-list-modal .book-preview__info {
+  flex: 1;
+}
+.add-to-list-modal .book-preview__info .book-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #442020;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+.add-to-list-modal .book-preview__info .book-authors {
+  color: #999999;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+.add-to-list-modal .book-preview__info .book-year {
+  color: #999999;
+  font-size: 0.8rem;
+  margin: 0;
+}
+.add-to-list-modal .list-selection {
+  margin-bottom: 2rem;
+}
+.add-to-list-modal .list-selection h4 {
+  color: #442020;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+.add-to-list-modal .list-selection .no-lists {
+  text-align: center;
+  padding: 2rem;
+  color: #999999;
+}
+.add-to-list-modal .list-selection .no-lists p {
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+.add-to-list-modal .list-selection .no-lists .create-list-btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(135deg, #cfa769, #b8956a);
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 0.25rem 0.5rem rgba(207, 167, 105, 0.3);
+  padding: 1rem 2rem;
+}
+.add-to-list-modal .list-selection .no-lists .create-list-btn:hover {
+  transform: translateY(-0.125rem);
+  box-shadow: 0 0.5rem 1rem rgba(207, 167, 105, 0.4);
+}
+.add-to-list-modal .list-selection .lists-grid {
+  display: grid;
+  gap: 1rem;
+  max-height: 300px;
+  overflow-y: auto;
+}
+.add-to-list-modal .list-selection .lists-grid .list-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border: 2px solid rgba(207, 167, 105, 0.2);
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #ffffff;
+}
+.add-to-list-modal .list-selection .lists-grid .list-option:hover {
+  border-color: #cfa769;
+  background: rgba(207, 167, 105, 0.05);
+}
+.add-to-list-modal .list-selection .lists-grid .list-option.selected {
+  border-color: #cfa769;
+  background: rgba(207, 167, 105, 0.1);
+  box-shadow: 0 0 0 2px rgba(207, 167, 105, 0.2);
+}
+.add-to-list-modal .list-selection .lists-grid .list-option.selected .list-name {
+  color: #442020;
+}
+.add-to-list-modal .list-selection .lists-grid .list-option__info {
+  flex: 1;
+}
+.add-to-list-modal .list-selection .lists-grid .list-option__info .list-name {
+  font-weight: 600;
+  color: #442020;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+.add-to-list-modal .list-selection .lists-grid .list-option__info .list-description {
+  font-size: 0.8rem;
+  color: #999999;
+  line-height: 1.3;
+  margin-bottom: 0.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.add-to-list-modal .list-selection .lists-grid .list-option__info .list-status {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  background: rgba(207, 167, 105, 0.1);
+  color: rgba(207, 167, 105, 0.8);
+}
+.add-to-list-modal .list-selection .lists-grid .list-option__radio {
+  margin-left: 1rem;
+}
+.add-to-list-modal .list-selection .lists-grid .list-option__radio input[type=radio] {
+  width: 18px;
+  height: 18px;
+  accent-color: #cfa769;
+}
+.add-to-list-modal .modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(51, 51, 51, 0.1);
+  margin-top: 1.5rem;
+}
+.add-to-list-modal .modal-actions .btn {
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  font-size: 0.9rem;
+}
+.add-to-list-modal .modal-actions .btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+.add-to-list-modal .modal-actions .btn:disabled:hover {
+  transform: none;
+}
+.add-to-list-modal .modal-actions .btn--secondary {
+  background: none;
+  color: #999999;
+  border: 2px solid rgba(51, 51, 51, 0.2);
+}
+.add-to-list-modal .modal-actions .btn--secondary:hover:not(:disabled) {
+  background: rgba(51, 51, 51, 0.05);
+  border-color: #333333;
+  color: #333333;
+}
+.add-to-list-modal .modal-actions .btn--primary {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(135deg, #cfa769, #b8956a);
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 0.25rem 0.5rem rgba(207, 167, 105, 0.3);
+}
+.add-to-list-modal .modal-actions .btn--primary:hover {
+  transform: translateY(-0.125rem);
+  box-shadow: 0 0.5rem 1rem rgba(207, 167, 105, 0.4);
+}
+@media (max-width: 768px) {
+  .add-to-list-modal .modal-actions {
+    flex-direction: column;
+  }
+  .add-to-list-modal .modal-actions .btn {
+    width: 100%;
+  }
+}/*# sourceMappingURL=AddToListModal.css.map */

@@ -1,62 +1,62 @@
-import './Home.scss';
-import { BiSolidBookAdd } from 'react-icons/bi';
-import { IoBookmarkOutline } from 'react-icons/io5'; // Nouvelle icône pour ajouter à une liste
-import ListCard from '../../components/common/ListCard/ListCard';
-import SearchBar from '../../components/common/SearchBar/SearchBar';
-import AddToListModal from '../../components/ui/Modal/AddToListModal';
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import type { Book } from '../../Types/Books';
-import { useMyBooksStore } from '@/store/addBook';
-import { useAuthStore } from '@/store/authStore';
-import HomeHeader from '@/components/common/HomeHeader/HomeHader';
+import "./Home.scss";
+import { BiSolidBookAdd } from "react-icons/bi";
+import { IoBookmarkOutline } from "react-icons/io5"; // Nouvelle icône pour ajouter à une liste
+import ListCard from "../../components/common/ListCard/ListCard";
+import AddToListModal from "../../components/ui/Modal/AddToListModal";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import type { Book } from "../../Types/Books";
+import { useMyBooksStore } from "@/store/addBook";
+import { useAuthStore } from "@/store/authStore";
+import HomeHeader from "@/components/common/HomeHeader/HomeHader";
+import { booksApi, type OpenLibraryBook } from "../../api/booksApi";
+import BookSearch from "@/components/ui/BookSearch/BookSearch";
 
 // Liste de listes populaires statique
 const popularLists = [
   {
     id: 1,
-    title: 'Les Incontournables de la Fantasy',
+    title: "Les Incontournables de la Fantasy",
     description:
-      'Une sélection des meilleurs romans de fantasy pour débuter ou approfondir ce genre captivant.',
+      "Une sélection des meilleurs romans de fantasy pour débuter ou approfondir ce genre captivant.",
     bookCount: 15,
-    username: 'MagicReader',
+    username: "MagicReader",
   },
   {
     id: 2,
-    title: 'Classiques de la Littérature Française',
+    title: "Classiques de la Littérature Française",
     description:
-      'Les œuvres essentielles de la littérature française à lire absolument.',
+      "Les œuvres essentielles de la littérature française à lire absolument.",
     bookCount: 22,
-    username: 'ProfDeLettres',
+    username: "ProfDeLettres",
   },
   {
     id: 3,
-    title: 'Science-Fiction Moderne',
+    title: "Science-Fiction Moderne",
     description:
-      'Les dernières pépites de la SF contemporaine qui révolutionnent le genre.',
+      "Les dernières pépites de la SF contemporaine qui révolutionnent le genre.",
     bookCount: 12,
-    username: 'SciFiAddict',
+    username: "SciFiAddict",
   },
 ];
 
 // Liste de termes pour obtenir des livres variés
 const searchTerms = [
-  'fiction',
-  'mystery',
-  'romance',
-  'fantasy',
-  'science',
-  'history',
-  'adventure',
-  'classic',
-  'novel',
-  'literature',
+  "fiction",
+  "mystery",
+  "romance",
+  "fantasy",
+  "science",
+  "history",
+  "adventure",
+  "classic",
+  "novel",
+  "literature",
 ];
 
 export default function Home() {
   const navigate = useNavigate();
-  const [popularBooks, setPopularBooks] = useState<Book[]>([]);
+  const [popularBooks, setPopularBooks] = useState<OpenLibraryBook[]>([]);
   const [loading, setLoading] = useState(true);
 
   // États pour le carrousel
@@ -98,12 +98,12 @@ export default function Home() {
   const handleImageError = (
     e: React.SyntheticEvent<HTMLImageElement, Event>
   ): void => {
-    e.currentTarget.src = '/placeholder-book.png';
+    e.currentTarget.src = "/placeholder-book.png";
   };
 
   // Gestionnaire de clic sur livre typé
   const handleBookClick = (isbn: string | undefined): void => {
-    if (isbn && isbn !== 'undefined') {
+    if (isbn && isbn !== "undefined") {
       navigate(`/books/${isbn}`);
     } else {
       alert("Ce livre n'a pas d'ISBN");
@@ -113,17 +113,17 @@ export default function Home() {
   // Ajouter à "Mes Livres" (collection générale)
   const handleAddToMyBooks = (book: Book) => {
     if (!user) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
     addBook(book);
-    navigate('/MesLivres');
+    navigate("/MesLivres");
   };
 
   // Ajouter à une liste spécifique
   const handleAddToList = (book: Book) => {
     if (!user) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
     setSelectedBookForList(book);
@@ -143,29 +143,24 @@ export default function Home() {
         const randomTerm =
           searchTerms[Math.floor(Math.random() * searchTerms.length)];
 
-        const response = await axios.get(
-          `http://localhost:3000/api/openlibrary/search/books?query=${encodeURIComponent(
-            randomTerm
-          )}`
-        );
-
-        const allBooks = response.data.data || [];
+        const response = await booksApi.searchBooks(randomTerm, 20);
+        const allBooks: OpenLibraryBook[] = response.data || [];
 
         // Filtre les livres avec des titres de moins de 40 caractères pour une meilleure UI
-        const filteredBooks: Book[] = allBooks.filter(
-          (book: Book) =>
+        const filteredBooks = allBooks.filter(
+          (book: OpenLibraryBook) =>
             book.title &&
             book.title.length < 40 &&
             book.authors &&
-            book.authors.length < 30
+            book.authors.length > 0
         );
         setPopularBooks(filteredBooks);
 
         // Vérification qu'on a assez de livres filtrés
         if (filteredBooks.length === 0) {
-          console.warn('Aucun livre avec titre <40 caractères');
-          const shuffled: Book[] = allBooks.sort(() => 0.5 - Math.random());
-          const randomBooks: Book[] = shuffled.slice(0, 8);
+          console.warn("Aucun livre avec titre <40 caractères");
+          const shuffled = allBooks.sort(() => 0.5 - Math.random());
+          const randomBooks = shuffled.slice(0, 8);
           setPopularBooks(randomBooks);
           return;
         }
@@ -176,7 +171,7 @@ export default function Home() {
 
         setPopularBooks(randomBooks);
       } catch (error) {
-        console.error('Erreur lors de la récupération des livres:', error);
+        console.error("Erreur lors de la récupération des livres:", error);
         setPopularBooks([]);
       } finally {
         setLoading(false);
@@ -189,7 +184,7 @@ export default function Home() {
   return (
     <>
       <HomeHeader />
-      <SearchBar />
+      <BookSearch/>
       <section className="home__section">
         <h2>Livres Populaires</h2>
         {loading ? (
@@ -213,44 +208,54 @@ export default function Home() {
                   transform: `translateX(-${
                     (currentIndex * 100) / booksPerPage
                   }%)`,
-                  transition: 'transform 0.3s ease-in-out',
+                  transition: "transform 0.3s ease-in-out",
                 }}
               >
                 {popularBooks
-                  .filter((book: Book) => book.isbn)
-                  .map((book: Book, index: number) => (
+                  .filter((book: OpenLibraryBook) => book.isbn13 || book.isbn10)
+                  .map((book: OpenLibraryBook, index: number) => (
                     <div
                       key={
-                        book.id ||
-                        book.open_library_key ||
+                        book.openLibraryId ||
+                        book.isbn13 ||
+                        book.isbn10 ||
                         `${book.title}-${index}`
                       }
                       className="books-carousel__item"
-                      onClick={() => navigate(`/books/${book.isbn || book.open_library_key}`)}
-                      style={{ cursor: 'pointer' }}
+                      onClick={() => {
+                        const isbn = book.isbn13 || book.isbn10;
+                        navigate(`/books/${isbn}`);
+                      }}
+                      style={{ cursor: "pointer" }}
                       role="button"
                       tabIndex={0}
                       onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
-                        if ((e.key === 'Enter' || e.key === ' ') && book.isbn) {
-                          handleBookClick(book.isbn);
+                        if (e.key === "Enter" || e.key === " ") {
+                          const isbn = book.isbn13 || book.isbn10;
+                          if (isbn) {
+                            handleBookClick(isbn);
+                          }
                         }
                       }}
                     >
                       <img
-                        src={String(book.cover_url || '')}
-                        alt={book.title || 'Couverture de livre'}
+                        src={String(book.coverUrl || "")}
+                        alt={book.title || "Couverture de livre"}
                         className="books-carousel__cover"
                         onError={handleImageError}
-                        onClick={() => navigate(`/books/${book.isbn || book.open_library_key}`)}
+                        onClick={() => {
+                          const isbn = book.isbn13 || book.isbn10;
+                          navigate(`/books/${isbn}`);
+                        }}
                       />
                       <div className="book-carousel__title">
-                        {book.title || 'Titre non disponible'}
+                        {book.title || "Titre non disponible"}
                       </div>
                       <div className="book-carousel__authors">
-                        {book.authors || 'Auteur inconnu'}
+                        {booksApi.utils.formatAuthors(book.authors)}
                       </div>
                       <div className="book-carousel__date">
-                        {book.publication_year || ''}
+                        {book.publishYear || ""}
                       </div>
 
                       {/* Boutons d'action */}
@@ -258,7 +263,20 @@ export default function Home() {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleAddToMyBooks(book);
+                            // Convertir OpenLibraryBook vers Book pour le store
+                            const bookForStore: Book = {
+                              id: book.openLibraryId,
+                              title: book.title,
+                              authors: booksApi.utils.formatAuthors(
+                                book.authors
+                              ),
+                              cover_url: 0, // Le store attend un number
+                              publication_year: book.publishYear || 0,
+                              isbn: book.isbn13 || book.isbn10,
+                              description: book.description,
+                              open_library_key: book.openLibraryId,
+                            };
+                            handleAddToMyBooks(bookForStore);
                           }}
                           className="action-btn action-btn--primary"
                           title="Ajouter à mes livres"
@@ -269,7 +287,20 @@ export default function Home() {
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            handleAddToList(book);
+                            // Convertir OpenLibraryBook vers Book pour le store
+                            const bookForStore: Book = {
+                              id: book.openLibraryId,
+                              title: book.title,
+                              authors: booksApi.utils.formatAuthors(
+                                book.authors
+                              ),
+                              cover_url: 0, // Le store attend un number
+                              publication_year: book.publishYear || 0,
+                              isbn: book.isbn13 || book.isbn10,
+                              description: book.description,
+                              open_library_key: book.openLibraryId,
+                            };
+                            handleAddToList(bookForStore);
                           }}
                           className="action-btn action-btn--secondary"
                           title="Ajouter à une liste"
@@ -303,7 +334,7 @@ export default function Home() {
               <button
                 key={index}
                 className={`indicator ${
-                  index * booksPerPage === currentIndex ? 'active' : ''
+                  index * booksPerPage === currentIndex ? "active" : ""
                 }`}
                 onClick={() => goToSlide(index)}
                 type="button"
@@ -329,7 +360,7 @@ export default function Home() {
         </div>
         <div className="section-footer">
           <a
-            onClick={() => navigate('/')}
+            onClick={() => navigate("/")}
             href="/popular-lists"
             className="see-all-link"
           >

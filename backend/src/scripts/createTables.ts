@@ -35,8 +35,6 @@ async function createTables() {
 
     console.log(" Tables créées avec succès !😃");
     console.log(" Tables disponibles👌");
-
-
   } catch (error) {
     console.error("❌ Erreur lors de la création des tables :", error);
   } finally {

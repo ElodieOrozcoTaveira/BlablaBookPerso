@@ -1,0 +1,210 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal-content {
+  background: #ffffff;
+  border-radius: 0.75rem;
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideIn 0.3s ease-out;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+  border-bottom: 1px solid rgba(51, 51, 51, 0.1);
+}
+.modal-header h2 {
+  font-size: 1.5rem;
+  color: #442020;
+  margin: 0;
+  font-weight: bold;
+}
+.modal-header .modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #999999;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 50%;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.modal-header .modal-close-btn:hover:not(:disabled) {
+  background: rgba(51, 51, 51, 0.1);
+  color: #442020;
+}
+.modal-header .modal-close-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.modal-form {
+  padding: 2rem;
+}
+.modal-form .form-group {
+  margin-bottom: 1.5rem;
+}
+.modal-form .form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #442020;
+  font-size: 0.9rem;
+}
+.modal-form .form-group input[type=text],
+.modal-form .form-group textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid rgba(207, 167, 105, 0.2);
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  font-family: inherit;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #ffffff;
+}
+.modal-form .form-group input[type=text]:focus,
+.modal-form .form-group textarea:focus {
+  outline: none;
+  border-color: #cfa769;
+  box-shadow: 0 0 0 3px rgba(207, 167, 105, 0.1);
+}
+.modal-form .form-group input[type=text].error,
+.modal-form .form-group textarea.error {
+  border-color: #442020;
+}
+.modal-form .form-group input[type=text]:disabled,
+.modal-form .form-group textarea:disabled {
+  background: rgba(51, 51, 51, 0.05);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+.modal-form .form-group input[type=text]::-moz-placeholder, .modal-form .form-group textarea::-moz-placeholder {
+  color: #999999;
+}
+.modal-form .form-group input[type=text]::placeholder,
+.modal-form .form-group textarea::placeholder {
+  color: #999999;
+}
+.modal-form .form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+.modal-form .form-group .error-message {
+  display: block;
+  color: #442020;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(51, 51, 51, 0.1);
+  margin-top: 1.5rem;
+}
+.modal-actions .btn-cancel {
+  background: none;
+  border: 2px solid rgba(51, 51, 51, 0.2);
+  color: #999999;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.modal-actions .btn-cancel:hover:not(:disabled) {
+  background: rgba(51, 51, 51, 0.05);
+  border-color: #333333;
+  color: #333333;
+}
+.modal-actions .btn-cancel:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.modal-actions .btn-create {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(135deg, #cfa769, #b8956a);
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 0.25rem 0.5rem rgba(207, 167, 105, 0.3);
+}
+.modal-actions .btn-create:hover {
+  transform: translateY(-0.125rem);
+  box-shadow: 0 0.5rem 1rem rgba(207, 167, 105, 0.4);
+}
+.modal-actions .btn-create:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+.modal-actions .btn-create:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+@media (max-width: 768px) {
+  .modal-content {
+    width: 95%;
+    margin: 1rem;
+  }
+  .modal-header,
+  .modal-form {
+    padding: 1.5rem;
+  }
+  .modal-actions {
+    flex-direction: column;
+  }
+  .modal-actions .btn-cancel,
+  .modal-actions .btn-create {
+    width: 100%;
+  }
+}/*# sourceMappingURL=CreateListModal.css.map */

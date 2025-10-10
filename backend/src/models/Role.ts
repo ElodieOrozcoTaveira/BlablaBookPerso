@@ -18,18 +18,14 @@ Role.init(
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    created_at: {
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.NOW,
-      allowNull: false,
-    },
   },
   {
     sequelize: sequelize,
     modelName: "Role",
     tableName: "ROLE",
     timestamps: true,
-    createdAt: "created_at",
+    createdAt: "created_at", // Nom de colonne dans la BDD
+    updatedAt: "updated_at", // Nom de colonne dans la BDD
     comment: "Rôles du système RBAC",
   }
 );

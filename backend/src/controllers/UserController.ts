@@ -1,34 +1,49 @@
-import { Request, Response } from 'express';
-import { User } from '../models/user.js';
+import type { Response } from "express";
+import type { SessionRequest } from "../middlewares/sessionMiddleware.js";
+import { UserService, UserError } from "../services/UserService.js";
 
 /**
- * Contrôleur pour la gestion des utilisateurs
- * Contient toutes les actions CRUD pour les users
+ * CONTRÔLEUR UTILISATEUR
+ *
+ * Orchestre les requêtes HTTP et délègue la logique métier au service
  */
-class UserController {
-  
+export class UserController {
   /**
    * GET /api/users
-   * Récupère tous les utilisateurs
+   * Récupère tous les utilisateurs (avec pagination)
    */
-  static async getAllUsers(req: Request, res: Response) {
+  static async getAllUsers(req: SessionRequest, res: Response): Promise<void> {
     try {
-      const users = await User.findAll({
-        attributes: { exclude: ['password'] }, // On ne renvoie jamais le mot de passe
-        order: [['created_at', 'DESC']]
-      });
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+
+      // Délégation au service
+      const result = await UserService.getAllUsers(page, limit);
 
       res.status(200).json({
         success: true,
-        data: users,
-        count: users.length
+        data: result.users,
+        pagination: {
+          page,
+          limit,
+          total: result.total,
+          totalPages: Math.ceil(result.total / limit),
+        },
       });
-
     } catch (error) {
-      console.error('Erreur getAllUsers:', error);
+      if (error instanceof UserError) {
+        res.status(error.statusCode).json({
+          success: false,
+          message: error.message,
+          code: error.code,
+        });
+        return;
+      }
+
+      console.error("❌ Erreur getAllUsers:", error);
       res.status(500).json({
         success: false,
-        message: 'Erreur lors de la récupération des utilisateurs'
+        message: "Erreur interne lors de la récupération des utilisateurs",
       });
     }
   }
@@ -37,164 +52,166 @@ class UserController {
    * GET /api/users/:id
    * Récupère un utilisateur par son ID
    */
-  static async getUserById(req: Request, res: Response) {
+  static async getUserById(req: SessionRequest, res: Response): Promise<void> {
     try {
-      const { id } = req.params;
+      // 🔧 CORRECTION TypeScript : Vérification que l'ID existe
+      if (!req.params.id) {
+        res.status(400).json({
+          success: false,
+          message: "ID utilisateur manquant",
+        });
+        return;
+      }
 
-      const user = await User.findByPk(id, {
-        attributes: { exclude: ['password'] }
-      });
+      const userId = parseInt(req.params.id);
+
+      if (isNaN(userId)) {
+        res.status(400).json({
+          success: false,
+          message: "ID utilisateur invalide",
+        });
+        return;
+      }
+
+      // Délégation au service
+      const user = await UserService.getUserById(userId);
 
       if (!user) {
-        return res.status(404).json({
+        res.status(404).json({
           success: false,
-          message: 'Utilisateur non trouvé'
+          message: "Utilisateur non trouvé",
         });
+        return;
       }
 
       res.status(200).json({
         success: true,
-        data: user
+        data: user,
       });
-
     } catch (error) {
-      console.error('Erreur getUserById:', error);
+      if (error instanceof UserError) {
+        res.status(error.statusCode).json({
+          success: false,
+          message: error.message,
+          code: error.code,
+        });
+        return;
+      }
+
+      console.error("❌ Erreur getUserById:", error);
       res.status(500).json({
         success: false,
-        message: 'Erreur lors de la récupération de l\'utilisateur'
+        message: "Erreur interne lors de la récupération de l'utilisateur",
       });
     }
   }
 
   /**
-   * POST /api/users
-   * Crée un nouvel utilisateur
+   * PUT /api/users/profile
+   * Met à jour le profil de l'utilisateur connecté
    */
-  static async createUser(req: Request, res: Response) {
+  static async updateProfile(
+    req: SessionRequest,
+    res: Response
+  ): Promise<void> {
     try {
-      const { firstname, lastname, username, email, password } = req.body;
+      const sessionUser = req.session.user;
 
-      // Validation basique
-      if (!firstname || !lastname || !username || !email || !password) {
-        return res.status(400).json({
+      if (!sessionUser) {
+        res.status(401).json({
           success: false,
-          message: 'Tous les champs sont requis'
+          message: "Session invalide",
         });
+        return;
       }
 
-      // Vérifier si l'email existe déjà
-      const existingUser = await User.findOne({ where: { email } });
-      if (existingUser) {
-        return res.status(409).json({
-          success: false,
-          message: 'Cet email est déjà utilisé'
-        });
-      }
+      const updateData = req.body;
 
-      // Créer l'utilisateur
-      const user = await User.create({
-        firstname,
-        lastname,
-        username,
-        email,
-        password // TODO: Hasher le mot de passe avec bcrypt
-      });
+      // Délégation au service
+      const updatedUser = await UserService.updateUserProfile(
+        sessionUser.id,
+        updateData
+      );
 
-      // Retourner sans le mot de passe
-      const userResponse = { ...user.toJSON() };
-      delete userResponse.password;
-
-      res.status(201).json({
-        success: true,
-        message: 'Utilisateur créé avec succès',
-        data: userResponse
-      });
-
-    } catch (error) {
-      console.error('Erreur createUser:', error);
-      res.status(500).json({
-        success: false,
-        message: 'Erreur lors de la création de l\'utilisateur'
-      });
-    }
-  }
-
-  /**
-   * PUT /api/users/:id
-   * Met à jour un utilisateur
-   */
-  static async updateUser(req: Request, res: Response) {
-    try {
-      const { id } = req.params;
-      const { firstname, lastname, username, email } = req.body;
-
-      const user = await User.findByPk(id);
-      if (!user) {
-        return res.status(404).json({
-          success: false,
-          message: 'Utilisateur non trouvé'
-        });
-      }
-
-      // Mise à jour
-      await user.update({
-        firstname: firstname || user.firstname,
-        lastname: lastname || user.lastname,
-        username: username || user.username,
-        email: email || user.email
-      });
-
-      // Retourner sans le mot de passe
-      const userResponse = { ...user.toJSON() };
-      delete userResponse.password;
+      // Mise à jour de la session
+      req.session.user = {
+        id: updatedUser.id,
+        email: updatedUser.email,
+        username: updatedUser.username,
+        firstname: updatedUser.firstname,
+        lastname: updatedUser.lastname,
+      };
 
       res.status(200).json({
         success: true,
-        message: 'Utilisateur mis à jour avec succès',
-        data: userResponse
+        message: "Profil mis à jour avec succès",
+        data: updatedUser,
       });
-
     } catch (error) {
-      console.error('Erreur updateUser:', error);
+      if (error instanceof UserError) {
+        res.status(error.statusCode).json({
+          success: false,
+          message: error.message,
+          code: error.code,
+        });
+        return;
+      }
+
+      console.error("❌ Erreur updateProfile:", error);
       res.status(500).json({
         success: false,
-        message: 'Erreur lors de la mise à jour de l\'utilisateur'
+        message: "Erreur interne lors de la mise à jour du profil",
       });
     }
   }
 
   /**
    * DELETE /api/users/:id
-   * Supprime un utilisateur (soft delete)
+   * Supprime un utilisateur (admin seulement)
    */
-  static async deleteUser(req: Request, res: Response) {
+  static async deleteUser(req: SessionRequest, res: Response): Promise<void> {
     try {
-      const { id } = req.params;
-
-      const user = await User.findByPk(id);
-      if (!user) {
-        return res.status(404).json({
+      //  Vérification que l'ID existe
+      if (!req.params.id) {
+        res.status(400).json({
           success: false,
-          message: 'Utilisateur non trouvé'
+          message: "ID utilisateur manquant",
         });
+        return;
       }
 
-      // Soft delete (grâce au paranoid: true)
-      await user.destroy();
+      const userId = parseInt(req.params.id);
+
+      if (isNaN(userId)) {
+        res.status(400).json({
+          success: false,
+          message: "ID utilisateur invalide",
+        });
+        return;
+      }
+
+      // Délégation au service
+      await UserService.deleteUser(userId);
 
       res.status(200).json({
         success: true,
-        message: 'Utilisateur supprimé avec succès'
+        message: "Utilisateur supprimé avec succès",
       });
-
     } catch (error) {
-      console.error('Erreur deleteUser:', error);
+      if (error instanceof UserError) {
+        res.status(error.statusCode).json({
+          success: false,
+          message: error.message,
+          code: error.code,
+        });
+        return;
+      }
+
+      console.error("❌ Erreur deleteUser:", error);
       res.status(500).json({
         success: false,
-        message: 'Erreur lors de la suppression de l\'utilisateur'
+        message: "Erreur interne lors de la suppression",
       });
     }
   }
 }
-
-export { UserController };

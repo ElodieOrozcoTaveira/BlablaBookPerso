@@ -1,4 +1,4 @@
-import { client } from "../db/sequelize.js";
+import { sequelize } from "../db/sequelize.js";
 import { Model, DataTypes } from "sequelize";
 
 class RolePermission extends Model {}
@@ -28,7 +28,7 @@ RolePermission.init(
     },
   },
   {
-    sequelize: client,
+    sequelize: sequelize,
     modelName: "RolePermission",
     tableName: "ROLE_PERMISSION",
     indexes: [

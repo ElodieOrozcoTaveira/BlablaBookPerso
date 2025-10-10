@@ -1,28 +1,27 @@
-import axios from 'axios';
-import './LivresPopulaires.scss';
-import { useNavigate } from 'react-router-dom';
-import type { Book } from '@/Types/Books'; // Adapte ce chemin selon ta structure
-import { useAuthStore } from '../../store/authStore';
-import { useMyBooksStore } from '../../store/addBook';
-import { useState, useEffect } from 'react';
-import { BiSolidBookAdd } from 'react-icons/bi';
+import "./LivresPopulaires.scss";
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../store/authStore";
+import { useMyBooksStore } from "../../store/addBook";
+import { useState, useEffect } from "react";
+import { BiSolidBookAdd } from "react-icons/bi";
+import { booksApi, type OpenLibraryBook } from "../../api/booksApi";
 
 const searchTerms = [
-  'fiction',
-  'mystery',
-  'romance',
-  'fantasy',
-  'science',
-  'history',
-  'adventure',
-  'classic',
-  'novel',
-  'literature',
+  "fiction",
+  "mystery",
+  "romance",
+  "fantasy",
+  "science",
+  "history",
+  "adventure",
+  "classic",
+  "novel",
+  "literature",
 ];
 
 export default function PopularBooks() {
   const navigate = useNavigate();
-  const [popularBooks, setPopularBooks] = useState<Book[]>([]);
+  const [popularBooks, setPopularBooks] = useState<OpenLibraryBook[]>([]);
   const [loading, setLoading] = useState(true);
   const addBook = useMyBooksStore((state) => state.addBook);
   const user = useAuthStore((state) => state.user);
@@ -33,12 +32,10 @@ export default function PopularBooks() {
       try {
         const randomTerm =
           searchTerms[Math.floor(Math.random() * searchTerms.length)];
-        const response = await axios.get(
-          `http://localhost:3000/api/openlibrary/search/books?query=${encodeURIComponent(
-            randomTerm
-          )}`
-        );
-        const allBooks: Book[] = response.data.data || [];
+
+        const response = await booksApi.searchBooks(randomTerm, 20);
+        const allBooks: OpenLibraryBook[] = response.data || [];
+
         const filteredBooks = allBooks.filter(
           (b) => b.title && b.title.length < 40
         );
@@ -46,7 +43,7 @@ export default function PopularBooks() {
         const topBooks = shuffled.slice(0, 20);
         setPopularBooks(topBooks);
       } catch (error) {
-        console.error('Erreur récupération livres populaires:', error);
+        console.error("Erreur récupération livres populaires:", error);
         setPopularBooks([]);
       } finally {
         setLoading(false);
@@ -55,13 +52,24 @@ export default function PopularBooks() {
     fetchPopularBooks();
   }, []);
 
-  const handleAddBook = (book: Book) => {
+  const handleAddBook = (book: OpenLibraryBook) => {
     if (!user) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
-    addBook(book);
-    navigate('/MesLivres');
+    // Adapter le livre OpenLibrary au format attendu par le store
+    const bookForStore = {
+      id: book.openLibraryId,
+      title: book.title,
+      authors: booksApi.utils.formatAuthors(book.authors),
+      cover_url: 0, // Le store attend un number, on met 0 par défaut
+      publication_year: book.publishYear || 0,
+      isbn: book.isbn13 || book.isbn10,
+      description: book.description,
+      open_library_key: book.openLibraryId,
+    };
+    addBook(bookForStore);
+    navigate("/MesLivres");
   };
 
   if (loading) {
@@ -80,15 +88,16 @@ export default function PopularBooks() {
       {popularBooks.map((book) => (
         <div
           key={
-            book.id?.toString() ||
-            book.isbn ||
-            book.open_library_key ||
+            book.openLibraryId ||
+            book.isbn13 ||
+            book.isbn10 ||
             `book-${book.title}`
           }
           className="popular-books-grid__item"
           onClick={() => {
-            if (book.isbn) {
-              navigate(`/books/${book.isbn}`);
+            const isbn = book.isbn13 || book.isbn10;
+            if (isbn) {
+              navigate(`/books/${isbn}`);
             } else {
               alert("Ce livre n'a pas d'ISBN.");
             }
@@ -96,17 +105,18 @@ export default function PopularBooks() {
           role="button"
           tabIndex={0}
           onKeyDown={(e) => {
-            if ((e.key === 'Enter' || e.key === ' ') && book.isbn) {
-              navigate(`/books/${book.isbn}`);
+            const isbn = book.isbn13 || book.isbn10;
+            if ((e.key === "Enter" || e.key === " ") && isbn) {
+              navigate(`/books/${isbn}`);
             }
           }}
           aria-label={`Voir les détails du livre ${book.title}`}
         >
-          {book.cover_url ? (
+          {book.coverUrl ? (
             <img
-              src={String(book.cover_url || '')}
+              src={String(book.coverUrl || "")}
               alt={book.title}
-              onError={(e) => (e.currentTarget.src = '/placeholder-book.png')}
+              onError={(e) => (e.currentTarget.src = "/placeholder-book.png")}
               className="popular-books-grid__cover"
             />
           ) : (
@@ -116,7 +126,7 @@ export default function PopularBooks() {
           )}
           <div className="popular-books-grid__title">{book.title}</div>
           <div className="popular-books-grid__authors">
-            {book.authors || 'Auteur inconnu'}
+            {booksApi.utils.formatAuthors(book.authors)}
           </div>
           <button
             aria-label={`Ajouter le livre ${book.title} à ma bibliothèque`}

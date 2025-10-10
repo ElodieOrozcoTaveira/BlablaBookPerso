@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
-import { z } from 'zod';
-import { useToastStore } from '../../store/toastStore';
-import './Register.scss';
+import React, { useState } from "react";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import { z } from "zod";
+import { useToastStore } from "../../store/toastStore";
+import "./Register.scss";
 
 // Validation simple avec Zod
 const registerSchema = z
   .object({
     firstname: z
       .string()
-      .min(1, 'Le prénom est requis')
-      .max(50, 'Le prénom ne peut pas dépasser 50 caractères')
+      .min(1, "Le prénom est requis")
+      .max(50, "Le prénom ne peut pas dépasser 50 caractères")
       .trim(),
 
     lastname: z
       .string()
-      .min(1, 'Le nom est requis')
-      .max(50, 'Le nom ne peut pas dépasser 50 caractères')
+      .min(1, "Le nom est requis")
+      .max(50, "Le nom ne peut pas dépasser 50 caractères")
       .trim(),
 
     username: z
@@ -31,36 +31,36 @@ const registerSchema = z
       .trim(),
 
     email: z
-      .email('Email invalide')
+      .email("Email invalide")
       .max(100, "L'email ne peut pas dépasser 100 caractères")
       .toLowerCase()
       .trim(),
 
     password: z
       .string()
-      .min(8, 'Le mot de passe doit faire au moins 8 caractères')
-      .max(72, 'Le mot de passe ne peut pas dépasser 72 caractères')
+      .min(8, "Le mot de passe doit faire au moins 8 caractères")
+      .max(72, "Le mot de passe ne peut pas dépasser 72 caractères")
       .regex(
         /(?=.*[a-z])/,
-        'Le mot de passe doit contenir au moins une minuscule'
+        "Le mot de passe doit contenir au moins une minuscule"
       )
       .regex(
         /(?=.*[A-Z])/,
-        'Le mot de passe doit contenir au moins une majuscule'
+        "Le mot de passe doit contenir au moins une majuscule"
       )
-      .regex(/(?=.*\d)/, 'Le mot de passe doit contenir au moins un chiffre')
+      .regex(/(?=.*\d)/, "Le mot de passe doit contenir au moins un chiffre")
       .regex(
         /(?=.*[@$!%*?&])/,
-        'Le mot de passe doit contenir au moins un caractère spécial (@$!%*?&)'
+        "Le mot de passe doit contenir au moins un caractère spécial (@$!%*?&)"
       ),
 
     confirmPassword: z
       .string()
-      .min(1, 'La confirmation du mot de passe est requise'),
+      .min(1, "La confirmation du mot de passe est requise"),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: 'Les mots de passe ne correspondent pas',
-    path: ['confirmPassword'],
+    message: "Les mots de passe ne correspondent pas",
+    path: ["confirmPassword"],
   });
 
 type RegisterFormData = z.infer<typeof registerSchema>;
@@ -69,12 +69,12 @@ const Register = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState<RegisterFormData>({
-    firstname: '',
-    lastname: '',
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+    firstname: "",
+    lastname: "",
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
 
   const [errors, setErrors] = useState<
@@ -126,7 +126,7 @@ const Register = () => {
 
     try {
       const response = await axios.post(
-        '/api/users/register',
+        "/api/auth/register",
         {
           firstname: formData.firstname,
           lastname: formData.lastname,
@@ -141,16 +141,16 @@ const Register = () => {
 
       if (response.data.success) {
         success(
-          'Compte créé avec succès ! Vous pouvez maintenant vous connecter.'
+          "Compte créé avec succès ! Vous pouvez maintenant vous connecter."
         );
-        navigate('/login');
+        navigate("/login");
       }
     } catch (error: any) {
-      console.error('Erreur inscription:', error);
+      console.error("Erreur inscription:", error);
       if (error.response?.data?.message) {
-        showError('Erreur: ' + error.response.data.message);
+        showError("Erreur: " + error.response.data.message);
       } else {
-        showError('Erreur de connexion. Veuillez réessayer.');
+        showError("Erreur de connexion. Veuillez réessayer.");
       }
     }
   };
@@ -173,7 +173,7 @@ const Register = () => {
                 name="firstname"
                 value={formData.firstname}
                 onChange={handleChange}
-                className={errors.firstname ? 'error' : ''}
+                className={errors.firstname ? "error" : ""}
                 placeholder="Votre prénom"
               />
               {errors.firstname && (
@@ -189,7 +189,7 @@ const Register = () => {
                 name="lastname"
                 value={formData.lastname}
                 onChange={handleChange}
-                className={errors.lastname ? 'error' : ''}
+                className={errors.lastname ? "error" : ""}
                 placeholder="Votre nom"
               />
               {errors.lastname && (
@@ -206,7 +206,7 @@ const Register = () => {
               name="username"
               value={formData.username}
               onChange={handleChange}
-              className={errors.username ? 'error' : ''}
+              className={errors.username ? "error" : ""}
               placeholder="Choisissez un nom d'utilisateur"
             />
             {errors.username && (
@@ -222,7 +222,7 @@ const Register = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className={errors.email ? 'error' : ''}
+              className={errors.email ? "error" : ""}
               placeholder="votre@email.com"
             />
             {errors.email && (
@@ -238,7 +238,7 @@ const Register = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className={errors.password ? 'error' : ''}
+              className={errors.password ? "error" : ""}
               placeholder="Créez un mot de passe sécurisé"
             />
             {errors.password && (
@@ -254,7 +254,7 @@ const Register = () => {
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
-              className={errors.confirmPassword ? 'error' : ''}
+              className={errors.confirmPassword ? "error" : ""}
               placeholder="Confirmez votre mot de passe"
             />
             {errors.confirmPassword && (

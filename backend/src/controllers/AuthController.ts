@@ -1,209 +1,222 @@
-import type { Request, Response } from "express";
-import { User } from "../models/user.js";
-import { PasswordService } from "../services/PasswordService.js";
+import type { Response } from "express";
+import type { SessionRequest } from "../middlewares/sessionMiddleware.js";
+import { AuthService, AuthError } from "../services/AuthService.js";
 
 /**
- * Contrôleur pour l'authentification
+ * 🎮 CONTRÔLEUR D'AUTHENTIFICATION - Cookie Sessions
+ * 
+ * Orchestre les requêtes HTTP et délègue la logique métier au service
  */
-class AuthController {
+export class AuthController {
+  
   /**
    * POST /api/auth/register
    * Inscription d'un nouvel utilisateur
    */
-  static async register(req: Request, res: Response) {
+  static async register(req: SessionRequest, res: Response): Promise<void> {
     try {
-      const { firstname, lastname, username, email, password } = req.body;
+      const userData = req.body;
 
-      // 1. Validation des champs requis
-      if (!firstname || !lastname || !username || !email || !password) {
-        return res.status(400).json({
-          success: false,
-          message: "Tous les champs sont requis",
-        });
-      }
+      // Délégation de la logique métier au service
+      const newUser = await AuthService.registerUser(userData);
 
-      // 2. Validation de la complexité du mot de passe
-      const passwordValidation =
-        PasswordService.validatePasswordStrength(password);
-      if (!passwordValidation.isValid) {
-        return res.status(400).json({
-          success: false,
-          message: "Mot de passe trop faible",
-          errors: passwordValidation.errors,
-        });
-      }
+      // Création de la session
+      req.session.user = {
+        id: newUser.id,
+        email: newUser.email,
+        username: newUser.username,
+        firstname: newUser.firstname,
+        lastname: newUser.lastname
+      };
 
-      // 3. Vérifier si l'email existe déjà
-      const existingUser = await User.findOne({
-        where: { email },
-        paranoid: false, // Inclure les utilisateurs soft-deleted
-      });
-
-      if (existingUser) {
-        return res.status(409).json({
-          success: false,
-          message: "Cet email est déjà utilisé",
-        });
-      }
-
-      // 4. Hasher le mot de passe
-      const hashedPassword = await PasswordService.hashPassword(password);
-
-      // 5. Créer l'utilisateur
-      const user = await User.create({
-        firstname,
-        lastname,
-        username,
-        email,
-        password: hashedPassword,
-      });
-
-      // 6. Retourner la réponse sans le mot de passe
-      const userResponse = { ...user.toJSON() };
-      delete userResponse.password;
-
+      // Réponse HTTP
       res.status(201).json({
         success: true,
-        message: "Utilisateur créé avec succès",
-        data: userResponse,
+        message: "Inscription réussie",
+        user: newUser
       });
+
     } catch (error) {
-      console.error("Erreur register:", error);
+      // Gestion des erreurs métier
+      if (error instanceof AuthError) {
+        res.status(error.statusCode).json({
+          success: false,
+          message: error.message,
+          code: error.code
+        });
+        return;
+      }
+
+      // Erreurs inattendues
+      console.error("❌ Erreur lors de l'inscription:", error);
       res.status(500).json({
         success: false,
-        message: "Erreur lors de la création du compte",
+        message: "Erreur interne lors de l'inscription",
+        error: process.env.NODE_ENV === "development" ? error : undefined
       });
     }
   }
 
   /**
    * POST /api/auth/login
-   * Connexion d'un utilisateur
+   * Connexion d'un utilisateur existant
    */
-  static async login(req: Request, res: Response) {
+  static async login(req: SessionRequest, res: Response): Promise<void> {
     try {
-      const { email, password } = req.body;
+      const credentials = req.body;
 
-      // 1. Validation des champs
-      if (!email || !password) {
-        return res.status(400).json({
-          success: false,
-          message: "Email et mot de passe requis",
-        });
-      }
+      // Délégation de l'authentification au service
+      const user = await AuthService.authenticateUser(credentials);
 
-      // 2. Rechercher l'utilisateur
-      const user = await User.findOne({ where: { email } });
-      if (!user) {
-        return res.status(401).json({
-          success: false,
-          message: "Email ou mot de passe incorrect",
-        });
-      }
+      // Création de la session
+      req.session.user = {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+        firstname: user.firstname,
+        lastname: user.lastname
+      };
 
-      // 3. Vérifier le mot de passe
-      const isPasswordValid = await PasswordService.verifyPassword(
-        password,
-        user.password
-      );
-      if (!isPasswordValid) {
-        return res.status(401).json({
-          success: false,
-          message: "Email ou mot de passe incorrect",
-        });
-      }
-
-      // 4. Mettre à jour la dernière connexion
-      await user.update({ connected_at: new Date() });
-
-      // 5. Préparer la réponse (sans le mot de passe)
-      const userResponse = { ...user.toJSON() };
-      delete userResponse.password;
-
-      // TODO: Générer un token JWT ici
-
+      // Réponse HTTP
       res.status(200).json({
         success: true,
         message: "Connexion réussie",
-        data: userResponse,
-        // token: jwt_token // À ajouter plus tard
+        user: user
       });
+
     } catch (error) {
-      console.error("Erreur login:", error);
+      // Gestion des erreurs métier
+      if (error instanceof AuthError) {
+        res.status(error.statusCode).json({
+          success: false,
+          message: error.message,
+          code: error.code
+        });
+        return;
+      }
+
+      // Erreurs inattendues
+      console.error("❌ Erreur lors de la connexion:", error);
       res.status(500).json({
         success: false,
-        message: "Erreur lors de la connexion",
+        message: "Erreur interne lors de la connexion",
+        error: process.env.NODE_ENV === "development" ? error : undefined
       });
     }
   }
 
   /**
-   * POST /api/auth/change-password
-   * Changement de mot de passe
+   * POST /api/auth/logout
+   * Déconnexion de l'utilisateur
    */
-  static async changePassword(req: Request, res: Response) {
+  static async logout(req: SessionRequest, res: Response): Promise<void> {
     try {
-      const { currentPassword, newPassword } = req.body;
-      const userId = req.params.userId; // TODO: Récupérer depuis le token JWT
-
-      // 1. Validation des champs
-      if (!currentPassword || !newPassword) {
-        return res.status(400).json({
+      // Vérifier si l'utilisateur est connecté
+      if (!req.session.user) {
+        res.status(401).json({
           success: false,
-          message: "Mot de passe actuel et nouveau mot de passe requis",
+          message: "Aucune session active",
+          code: "NO_ACTIVE_SESSION"
         });
+        return;
       }
 
-      // 2. Validation du nouveau mot de passe
-      const passwordValidation =
-        PasswordService.validatePasswordStrength(newPassword);
-      if (!passwordValidation.isValid) {
-        return res.status(400).json({
-          success: false,
-          message: "Nouveau mot de passe trop faible",
-          errors: passwordValidation.errors,
+      // Destruction de la session
+      req.session.destroy((error) => {
+        if (error) {
+          console.error("❌ Erreur lors de la destruction de session:", error);
+          res.status(500).json({
+            success: false,
+            message: "Erreur lors de la déconnexion"
+          });
+          return;
+        }
+
+        // Suppression du cookie côté client
+        res.clearCookie('blablabook_session');
+        
+        res.status(200).json({
+          success: true,
+          message: "Déconnexion réussie"
         });
+      });
+
+    } catch (error) {
+      console.error("❌ Erreur lors de la déconnexion:", error);
+      res.status(500).json({
+        success: false,
+        message: "Erreur interne lors de la déconnexion"
+      });
+    }
+  }
+
+  /**
+   * GET /api/auth/me
+   * Récupérer le profil de l'utilisateur connecté
+   */
+  static async getProfile(req: SessionRequest, res: Response): Promise<void> {
+    try {
+      const sessionUser = req.session.user;
+
+      if (!sessionUser) {
+        res.status(401).json({
+          success: false,
+          message: "Session invalide",
+          code: "INVALID_SESSION"
+        });
+        return;
       }
 
-      // 3. Rechercher l'utilisateur
-      const user = await User.findByPk(userId);
+      // Récupération des données complètes via le service
+      const user = await AuthService.getUserById(sessionUser.id);
+
       if (!user) {
-        return res.status(404).json({
+        res.status(404).json({
           success: false,
           message: "Utilisateur non trouvé",
+          code: "USER_NOT_FOUND"
         });
+        return;
       }
-
-      // 4. Vérifier l'ancien mot de passe
-      const isCurrentPasswordValid = await PasswordService.verifyPassword(
-        currentPassword,
-        user.password
-      );
-      if (!isCurrentPasswordValid) {
-        return res.status(401).json({
-          success: false,
-          message: "Mot de passe actuel incorrect",
-        });
-      }
-
-      // 5. Hasher le nouveau mot de passe
-      const hashedNewPassword = await PasswordService.hashPassword(newPassword);
-
-      // 6. Mettre à jour le mot de passe
-      await user.update({ password: hashedNewPassword });
 
       res.status(200).json({
         success: true,
-        message: "Mot de passe modifié avec succès",
+        user: user
       });
+
     } catch (error) {
-      console.error("Erreur changePassword:", error);
+      console.error("❌ Erreur lors de la récupération du profil:", error);
       res.status(500).json({
         success: false,
-        message: "Erreur lors du changement de mot de passe",
+        message: "Erreur interne lors de la récupération du profil"
+      });
+    }
+  }
+
+  /**
+   * GET /api/auth/check-session
+   * Vérifier si la session est valide
+   */
+  static async checkSession(req: SessionRequest, res: Response): Promise<void> {
+    try {
+      if (req.session.user) {
+        res.status(200).json({
+          success: true,
+          authenticated: true,
+          user: req.session.user
+        });
+      } else {
+        res.status(200).json({
+          success: true,
+          authenticated: false
+        });
+      }
+    } catch (error) {
+      console.error("❌ Erreur lors de la vérification de session:", error);
+      res.status(500).json({
+        success: false,
+        message: "Erreur interne lors de la vérification"
       });
     }
   }
 }
-
-export { AuthController };

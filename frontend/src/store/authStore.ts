@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 // src/store/authStore.ts
-import { create } from 'zustand';
-import axios from 'axios'; // 👈 AJOUT D'AXIOS
+import { create } from "zustand";
+import axios from "axios"; // 👈 AJOUT D'AXIOS
 
 interface User {
   id: number;
@@ -25,7 +25,7 @@ export const useAuthStore = create<AuthState>((set) => ({
   checkAuth: async (): Promise<void> => {
     set({ isLoading: true });
     try {
-      const response = await axios.get('/api/auth/me', {
+      const response = await axios.get("/api/auth/check-session", {
         withCredentials: true,
       });
 
@@ -37,7 +37,7 @@ export const useAuthStore = create<AuthState>((set) => ({
         isLoading: false,
       });
     } catch (error) {
-      console.error('Erreur vérification auth:', error);
+      console.error("Erreur vérification auth:", error);
       set({ user: null, isLoading: false });
     }
   },
@@ -46,7 +46,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ isLoading: true });
     try {
       const response = await axios.post(
-        '/api/auth/login',
+        "/api/auth/login",
         { email, password },
         { withCredentials: true }
       );
@@ -57,7 +57,7 @@ export const useAuthStore = create<AuthState>((set) => ({
       });
       return response.data.success;
     } catch (error) {
-      console.error('Erreur connexion:', error);
+      console.error("Erreur connexion:", error);
       set({ isLoading: false });
       return false;
     }
@@ -66,14 +66,14 @@ export const useAuthStore = create<AuthState>((set) => ({
   logout: async (): Promise<void> => {
     try {
       await axios.post(
-        '/api/auth/logout',
+        "/api/auth/logout",
         {},
         {
           withCredentials: true,
         }
       );
     } catch (error) {
-      console.error('Erreur déconnexion:', error);
+      console.error("Erreur déconnexion:", error);
     } finally {
       set({ user: null });
     }

@@ -1,7 +1,7 @@
 import argon2 from "argon2";
 
 /**
- * Service pour gérer le hachage et la vérification des mots de passe
+ * Hachage et vérification des mots de passe
  * Utilise Argon2 (recommandé par l'OWASP)
  */
 class PasswordService {
@@ -31,7 +31,7 @@ class PasswordService {
    * Vérifie un mot de passe contre son hash
    * @param password - Le mot de passe en clair
    * @param hash - Le hash stocké en base
-   * @returns true si le mot de passe correspond, false sinon
+   * @returns true si le mot de passe correspond, sinon false
    */
   static async verifyPassword(
     password: string,

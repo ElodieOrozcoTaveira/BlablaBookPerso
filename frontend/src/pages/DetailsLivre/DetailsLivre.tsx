@@ -1,36 +1,44 @@
-import { useEffect, useState } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import axios from 'axios';
-import './DetailsLivre.scss';
+import { useEffect, useState } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+import "./DetailsLivre.scss";
+import { booksApi, type OpenLibraryBook } from "../../api/booksApi";
 
 export default function DetailsLivre() {
   const { isbn } = useParams<{ isbn: string }>();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [book, setBook] = useState<any>(null);
+  const [book, setBook] = useState<OpenLibraryBook | null>(null);
   const [rating, setRating] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string>("");
 
   // Fonction utilitaire pour construire l'URL de la cover
-  const getCoverUrl = (bookData: any) => {
-    if (bookData.isbn) {
-      return `https://covers.openlibrary.org/b/isbn/${bookData.isbn}-L.jpg`;
+  const getCoverUrl = (bookData: OpenLibraryBook) => {
+    if (bookData.coverUrl) {
+      return bookData.coverUrl;
     }
-    if (bookData.open_library_key) {
-      return `https://covers.openlibrary.org/b/olid/${bookData.open_library_key}-L.jpg`;
+    if (bookData.isbn13) {
+      return `https://covers.openlibrary.org/b/isbn/${bookData.isbn13}-L.jpg`;
     }
-    return '/placeholder-book.png'; // fallback
+    if (bookData.isbn10) {
+      return `https://covers.openlibrary.org/b/isbn/${bookData.isbn10}-L.jpg`;
+    }
+    return "/placeholder-book.png";
   };
 
   useEffect(() => {
-    console.log('ISBN reçu:', isbn);
-    console.log('URL actuelle:', location.pathname);
+    console.log("ISBN reçu:", isbn);
+    console.log("URL actuelle:", location.pathname);
 
     const fetchBook = async () => {
-      if (!isbn || isbn.trim() === '' || isbn === 'undefined' || isbn === ':isbn') {
-        console.error('ISBN invalide ou manquant:', isbn);
+      if (
+        !isbn ||
+        isbn.trim() === "" ||
+        isbn === "undefined" ||
+        isbn === ":isbn"
+      ) {
+        console.error("ISBN invalide ou manquant:", isbn);
         setError(`ISBN invalide: "${isbn}". Vérifiez l'URL.`);
         setLoading(false);
         return;
@@ -38,17 +46,16 @@ export default function DetailsLivre() {
 
       try {
         setLoading(true);
-        setError('');
-        console.log('Tentative de récupération du livre avec ISBN:', isbn);
-        const response = await axios.get(
-          `http://localhost:3000/api/openlibrary/book/${isbn}/excerpts`
-        );
-        console.log('Réponse reçue:', response.data);
-        setBook(response.data.data);
+        setError("");
+        console.log("Tentative de récupération du livre avec ISBN:", isbn);
+        const response = await booksApi.searchByISBN(isbn);
+        console.log("Réponse reçue:", response.data);
+        setBook(response.data);
       } catch (error: any) {
-        console.error('Erreur lors de la récupération du livre:', error);
+        console.error("Erreur lors de la récupération du livre:", error);
         setError(
-          error.response?.data?.message || `Erreur lors du chargement du livre (ISBN: ${isbn})`
+          error.response?.data?.message ||
+            `Erreur lors du chargement du livre (ISBN: ${isbn})`
         );
         setBook(null);
       } finally {
@@ -65,17 +72,17 @@ export default function DetailsLivre() {
         <h1>Erreur de chargement</h1>
         <p>{error}</p>
         <div className="error-actions">
-          <button onClick={() => navigate('/')}>Retour à l'accueil</button>
+          <button onClick={() => navigate("/")}>Retour à l'accueil</button>
           <button onClick={() => window.location.reload()}>Réessayer</button>
         </div>
         <div
           className="debug-info"
           style={{
-            marginTop: '20px',
-            padding: '10px',
-            background: '#f0f0f0',
-            fontSize: '12px',
-            fontFamily: 'monospace',
+            marginTop: "20px",
+            padding: "10px",
+            background: "#f0f0f0",
+            fontSize: "12px",
+            fontFamily: "monospace",
           }}
         >
           <strong>Informations de debug :</strong>
@@ -100,11 +107,11 @@ export default function DetailsLivre() {
         <div
           className="debug-info"
           style={{
-            marginTop: '20px',
-            padding: '10px',
-            background: '#f0f0f0',
-            fontSize: '12px',
-            fontFamily: 'monospace',
+            marginTop: "20px",
+            padding: "10px",
+            background: "#f0f0f0",
+            fontSize: "12px",
+            fontFamily: "monospace",
           }}
         >
           <strong>Debug:</strong> Chargement en cours pour ISBN "{isbn}"
@@ -118,7 +125,7 @@ export default function DetailsLivre() {
       <div className="details-livre not-found">
         <h1>Livre non trouvé</h1>
         <p>Aucun livre trouvé pour l'ISBN: {isbn}</p>
-        <button onClick={() => navigate('/')}>Retour à l'accueil</button>
+        <button onClick={() => navigate("/")}>Retour à l'accueil</button>
       </div>
     );
   }
@@ -126,27 +133,39 @@ export default function DetailsLivre() {
   const coverUrl = getCoverUrl(book);
 
   return (
-    <div className="details-livre">      
-
+    <div className="details-livre">
       <h1>{book.title}</h1>
       <p>
-        <strong>Auteur(s):</strong>{' '}
-        {Array.isArray(book.authors) && book.authors.length > 0
-          ? book.authors.map((author: any) => author.name).join(', ')
-          : 'Inconnu'}
+        <strong>Auteur(s):</strong> {booksApi.utils.formatAuthors(book.authors)}
       </p>
+      {book.publishYear && (
+        <p>
+          <strong>Année de publication:</strong> {book.publishYear}
+        </p>
+      )}
+      {book.pageCount && (
+        <p>
+          <strong>Nombre de pages:</strong> {book.pageCount}
+        </p>
+      )}
+      {book.subjects && book.subjects.length > 0 && (
+        <p>
+          <strong>Sujets:</strong>{" "}
+          {booksApi.utils.formatSubjects(book.subjects)}
+        </p>
+      )}
 
-      <img className='cover-image' src={coverUrl} alt={`Couverture de ${book.title}`} />
+      <img
+        className="cover-image"
+        src={coverUrl}
+        alt={`Couverture de ${book.title}`}
+      />
 
-      <h2>Extraits</h2>
-      {Array.isArray(book.excerpts) && book.excerpts.length > 0 ? (
-        <ul>
-          {book.excerpts.map((ex: any, idx: number) => (
-            <li key={idx}>{ex.text}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>Aucun extrait disponible.</p>
+      {book.description && (
+        <>
+          <h2>Description</h2>
+          <p>{book.description}</p>
+        </>
       )}
 
       <h2>Ajouter à ma bibliothèque</h2>
@@ -156,12 +175,12 @@ export default function DetailsLivre() {
             key={star}
             onClick={() => setRating(star)}
             style={{
-              cursor: 'pointer',
-              fontSize: '2rem',
-              color: star <= rating ? '#FFD700' : '#ccc',
+              cursor: "pointer",
+              fontSize: "2rem",
+              color: star <= rating ? "#FFD700" : "#ccc",
             }}
             role="button"
-            aria-label={`Note ${star} étoile${star > 1 ? 's' : ''}`}
+            aria-label={`Note ${star} étoile${star > 1 ? "s" : ""}`}
             tabIndex={0}
           >
             ★

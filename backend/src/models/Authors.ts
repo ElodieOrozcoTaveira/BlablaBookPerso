@@ -23,6 +23,9 @@ Authors.init(
     sequelize: sequelize,
     modelName: "Authors",
     tableName: "AUTHOR",
+    timestamps: true, // Active les timestamps automatiques
+    createdAt: "created_at", // Nom de colonne dans la BDD
+    updatedAt: "updated_at", // Nom de colonne dans la BDD
     comment: "Répertoire des auteurs de livres",
   }
 );

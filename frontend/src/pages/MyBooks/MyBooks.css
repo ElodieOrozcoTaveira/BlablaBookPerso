@@ -176,6 +176,7 @@
 }
 
 .toggle-read-btn {
+  padding: 2rem;
   background: none;
   border: none;
   cursor: pointer;

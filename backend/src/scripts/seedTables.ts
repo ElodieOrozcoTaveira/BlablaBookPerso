@@ -18,7 +18,7 @@ import "../models/association.js";
 
 /**
  * Ce script permet d' insérer des données de test dans la base de données
- * Attention : Ce script supprime toutes les données existantes !
+ * Mais il supprime aussi toutes les données existantes
  */
 async function seedTables() {
   try {

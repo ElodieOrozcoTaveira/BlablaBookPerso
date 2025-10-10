@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 /**
  * Service pour intégrer l'API OpenLibrary
@@ -31,32 +31,35 @@ interface OpenLibraryBook {
 }
 
 class OpenLibraryService {
-  private static baseUrl = 'https://openlibrary.org';
+  private static baseUrl = "https://openlibrary.org";
 
   /**
    * Recherche des livres sur OpenLibrary
    * @param query - Terme de recherche (titre, auteur, ISBN...)
    * @param limit - Nombre de résultats (défaut: 20)
    */
-  static async searchBooks(query: string, limit: number = 20): Promise<OpenLibraryBook[]> {
+  static async searchBooks(
+    query: string,
+    limit: number = 20
+  ): Promise<OpenLibraryBook[]> {
     try {
       const response = await axios.get(`${this.baseUrl}/search.json`, {
         params: {
           q: query,
           limit,
-          fields: 'key,title,author_name,isbn,first_publish_year,number_of_pages_median,subject,cover_i'
-        }
+          fields:
+            "key,title,author_name,isbn,first_publish_year,number_of_pages_median,subject,cover_i",
+        },
       });
 
-      const books = response.data.docs.map((book: OpenLibrarySearchResult) => 
+      const books = response.data.docs.map((book: OpenLibrarySearchResult) =>
         this.formatBookData(book)
       );
 
       return books;
-
     } catch (error) {
-      console.error('Erreur recherche OpenLibrary:', error);
-      throw new Error('Impossible de rechercher les livres');
+      console.error("Erreur recherche OpenLibrary:", error);
+      throw new Error("Impossible de rechercher les livres");
     }
   }
 
@@ -72,43 +75,46 @@ class OpenLibraryService {
       // Récupération des auteurs si nécessaire
       let authors: string[] = [];
       if (book.authors && book.authors.length > 0) {
-        const authorPromises = book.authors.map((author: any) => 
+        const authorPromises = book.authors.map((author: any) =>
           axios.get(`${this.baseUrl}${author.author.key}.json`)
         );
         const authorResponses = await Promise.all(authorPromises);
-        authors = authorResponses.map(res => res.data.name);
+        authors = authorResponses.map((res) => res.data.name);
       }
 
       return {
-        title: book.title,
+        title: book.title || "Titre non disponible",
         authors,
-        description: book.description?.value || book.description,
-        subjects: book.subjects?.slice(0, 5) || [], // Limite à 5 sujets
+        description: book.description?.value || book.description || undefined,
+        subjects: book.subjects?.slice(0, 5) || undefined,
         openLibraryId,
-        coverUrl: book.covers?.[0] ? this.getCoverUrl(book.covers[0]) : undefined
-      };
-
+        coverUrl: book.covers?.[0]
+          ? this.getCoverUrl(book.covers[0])
+          : undefined,
+      } as OpenLibraryBook;
     } catch (error) {
-      console.error('Erreur détails OpenLibrary:', error);
-      throw new Error('Impossible de récupérer les détails du livre');
+      console.error("Erreur détails OpenLibrary:", error);
+      throw new Error("Impossible de récupérer les détails du livre");
     }
   }
 
   /**
    * Formate les données de recherche OpenLibrary
    */
-  private static formatBookData(book: OpenLibrarySearchResult): OpenLibraryBook {
+  private static formatBookData(
+    book: OpenLibrarySearchResult
+  ): OpenLibraryBook {
     return {
       title: book.title,
-      authors: book.author_name || [],
-      isbn13: book.isbn?.find(isbn => isbn.length === 13),
-      isbn10: book.isbn?.find(isbn => isbn.length === 10),
-      publishYear: book.first_publish_year,
-      pageCount: book.number_of_pages_median,
-      subjects: book.subject?.slice(0, 5) || [],
+      authors: book.author_name || undefined,
+      isbn13: book.isbn?.find((isbn) => isbn.length === 13) || undefined,
+      isbn10: book.isbn?.find((isbn) => isbn.length === 10) || undefined,
+      publishYear: book.first_publish_year || undefined,
+      pageCount: book.number_of_pages_median || undefined,
+      subjects: book.subject?.slice(0, 5) || undefined,
       coverUrl: book.cover_i ? this.getCoverUrl(book.cover_i) : undefined,
-      openLibraryId: book.key
-    };
+      openLibraryId: book.key,
+    } as OpenLibraryBook;
   }
 
   /**
@@ -126,31 +132,39 @@ class OpenLibraryService {
       const response = await axios.get(`${this.baseUrl}/api/books`, {
         params: {
           bibkeys: `ISBN:${isbn}`,
-          format: 'json',
-          jscmd: 'data'
-        }
+          format: "json",
+          jscmd: "data",
+        },
       });
 
       const bookData = response.data[`ISBN:${isbn}`];
       if (!bookData) return null;
 
       return {
-        title: bookData.title,
-        authors: bookData.authors?.map((author: any) => author.name) || [],
+        title: bookData.title || "Titre non disponible",
+        authors:
+          bookData.authors?.map((author: any) => author.name).filter(Boolean) ||
+          undefined,
         isbn13: isbn.length === 13 ? isbn : undefined,
         isbn10: isbn.length === 10 ? isbn : undefined,
-        publishYear: bookData.publish_date ? new Date(bookData.publish_date).getFullYear() : undefined,
-        pageCount: bookData.number_of_pages,
-        subjects: bookData.subjects?.map((s: any) => s.name).slice(0, 5) || [],
-        coverUrl: bookData.cover?.medium,
-        openLibraryId: bookData.key
-      };
-
+        publishYear: bookData.publish_date
+          ? new Date(bookData.publish_date).getFullYear()
+          : undefined,
+        pageCount: bookData.number_of_pages || undefined,
+        subjects:
+          bookData.subjects
+            ?.map((s: any) => s.name)
+            .filter(Boolean)
+            .slice(0, 5) || undefined,
+        coverUrl: bookData.cover?.medium || undefined,
+        openLibraryId: bookData.key || `ISBN:${isbn}`,
+      } as OpenLibraryBook;
     } catch (error) {
-      console.error('Erreur recherche ISBN:', error);
+      console.error("Erreur recherche ISBN:", error);
       return null;
     }
   }
 }
 
-export { OpenLibraryService, OpenLibraryBook };
+export { OpenLibraryService };
+export type { OpenLibraryBook };
