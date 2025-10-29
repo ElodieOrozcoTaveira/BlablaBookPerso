@@ -1,5 +1,6 @@
 import { Books } from "../models/Books.js";
 import { Library } from "../models/Library.js";
+import { sequelize } from "../db/sequelize.js";
 import type { OpenLibraryBook } from "./OpenLibraryService.js";
 
 /**
@@ -56,6 +57,7 @@ export class BookService {
             ? new Date(openLibraryBook.publishYear, 0, 1)
             : null,
           image: openLibraryBook.coverUrl ? true : false,
+          cover_url: openLibraryBook.coverUrl || null,
         } as any);
 
         console.log(`✅ Livre créé en BDD: ${book.get("title")}`);
@@ -80,20 +82,48 @@ export class BookService {
         );
       }
 
-      // 4. Ajouter le livre à la bibliothèque de l'utilisateur
-      // Note: Adapter selon votre modèle Library
-      await Library.create({
-        // Adapter les champs selon votre modèle
-        // user_id: userId,
-        // book_id: book.get('id'),
-        // status: status
-      } as any);
+      // 4. Récupérer ou créer la bibliothèque de l'utilisateur
+      let userLibrary = await Library.findOne({
+        where: { id_user: userId },
+      });
+
+      if (!userLibrary) {
+        // Créer une bibliothèque par défaut pour l'utilisateur
+        userLibrary = await Library.create({
+          name: "Ma Bibliothèque",
+          id_user: userId, // Utilise id_user car c'est le nom dans la BDD
+        });
+        console.log(`📚 Bibliothèque créée pour l'utilisateur ${userId}`);
+      }
+
+      // 5. Ajouter le livre à la bibliothèque via la table de liaison
+      const bookId = book.get("id");
+      const libraryId = userLibrary.get("id");
 
       console.log(
-        `✅ Livre ajouté à la bibliothèque de l'utilisateur ${userId}`
+        `🔗 Création relation BOOK_LIBRARY: book=${bookId}, library=${libraryId}`
       );
 
-      // 5. Retourner le livre avec les infos de bibliothèque
+      await sequelize.query(
+        `
+        INSERT INTO "BOOK_LIBRARY" (id_book, id_library, created_at, updated_at)
+        VALUES ($1, $2, NOW(), NOW())
+        ON CONFLICT (id_book, id_library) DO NOTHING
+      `,
+        {
+          bind: [bookId, libraryId],
+        }
+      );
+
+      console.log(`✅ Relation BOOK_LIBRARY créée avec succès`);
+
+      console.log(
+        `✅ Livre "${book.get(
+          "title"
+        )}" ajouté à la bibliothèque de l'utilisateur ${userId}`
+      );
+
+      // 6. Retourner le livre avec les infos de bibliothèque
       return {
         id: book.get("id"),
         title: book.get("title"),
@@ -102,6 +132,7 @@ export class BookService {
         pages: book.get("nb_pages"),
         publishedAt: book.get("published_at"),
         image: book.get("image"),
+        cover_url: book.get("cover_url"),
         openLibraryData: openLibraryBook,
         libraryStatus: status,
         addedAt: new Date().toISOString(),
@@ -124,15 +155,51 @@ export class BookService {
    */
   static async getUserLibrary(userId: number) {
     try {
-      // TODO: Implémenter la récupération des livres de l'utilisateur
-      // selon votre modèle Library et les associations
-
       console.log(`📖 Récupération bibliothèque utilisateur ${userId}`);
 
-      return {
-        message: "Récupération bibliothèque à implémenter",
-        userId,
-      };
+      // Requête SQL directe pour joindre les tables et récupérer les livres de l'utilisateur
+      const query = `
+        SELECT DISTINCT 
+          b.id_book as id, 
+          b.title, 
+          b.isbn, 
+          b.summary, 
+          b.nb_pages, 
+          b.published_at, 
+          b.image, 
+          b.cover_url
+        FROM "BOOK" b
+        INNER JOIN "BOOK_LIBRARY" bl ON b.id_book = bl.id_book
+        INNER JOIN "LIBRARY" l ON bl.id_library = l.id_library
+        WHERE l.id_user = :userId
+      `;
+
+      const { QueryTypes } = await import("sequelize");
+      const { sequelize } = await import("../db/sequelize.js");
+
+      const books = await sequelize.query(query, {
+        type: QueryTypes.SELECT,
+        replacements: { userId },
+      });
+
+      console.log(
+        `✅ ${books.length} livre(s) trouvé(s) pour l'utilisateur ${userId}`
+      );
+
+      // Formater les données pour le frontend
+      return books.map((book: any) => ({
+        id: book.id?.toString(),
+        title: book.title,
+        authors: "Auteur inconnu", // TODO: Récupérer les auteurs depuis BOOK_AUTHOR
+        cover_url: book.cover_url,
+        publication_year: book.published_at
+          ? new Date(book.published_at).getFullYear()
+          : 2024,
+        isbn: book.isbn,
+        description: book.summary,
+        open_library_key: `book_${book.id}`,
+        read: false,
+      }));
     } catch (error) {
       console.error("❌ Erreur récupération bibliothèque:", error);
       throw new BookError(

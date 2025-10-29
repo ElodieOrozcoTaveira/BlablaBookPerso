@@ -2,7 +2,7 @@
 @use "../../../styles/Mixins/mixins.scss";
 
 .footer-container {
-  margin-top: 0;
+  margin-top: 10rem;
   padding: 1rem 0;
   display: flex;
   flex-wrap: wrap;
@@ -26,8 +26,8 @@
   &__figma {
     margin-top: 1rem;
   }
-  &__reseaux{
-    font-family: 'Poppins', serif;
+  &__reseaux {
+    font-family: "Poppins", serif;
     font-size: 18px;
     font-weight: bold;
   }
@@ -54,13 +54,13 @@
       padding-top: 1rem;
     }
   }
-  &__infoSite{
-    font-family: 'Poppins', serif;
+  &__infoSite {
+    font-family: "Poppins", serif;
     font-size: 25px;
     font-weight: bold;
   }
-  &__navigation{
-    font-family: 'Poppins', sans-serif;
+  &__navigation {
+    font-family: "Poppins", sans-serif;
   }
 
   // Bloc droit
@@ -77,8 +77,8 @@
       padding: 1rem 0;
     }
   }
-  &__link{
-    font-family: 'Poppins', sans-serif;
+  &__link {
+    font-family: "Poppins", sans-serif;
   }
 
   // Bloc exploration
@@ -91,7 +91,7 @@
 
   &__aide {
     margin-bottom: 0.2rem;
-    font-family: 'Poppins', serif;
+    font-family: "Poppins", serif;
     font-size: 25px;
     font-weight: bold;
   }
@@ -137,7 +137,7 @@ h3 {
   color: #442020;
   font-size: 1.5rem;
   font-weight: 300;
-  font-family: 'Poppins', serif;
+  font-family: "Poppins", serif;
 }
 
 // Logos
@@ -147,36 +147,285 @@ img {
 }
 
 // RESPONSIVE DESIGN
-@media (max-width: 700px) {
+
+// Tablet (768px à 1024px)
+@include mixins.tablet {
   .footer-container {
-    flex-direction: column;
-    align-items: center;
+    padding: 2rem 1rem;
+    gap: 2rem;
 
     &__articleleft {
-      flex-direction: row;
-      justify-content: space-between;
-      padding: 0 1rem;
-      width: 100%;
+      padding: 1.5rem;
+      min-width: 200px;
 
       .footer-container__figma {
-        text-align: left;
-        padding-top: 1rem;
-      }
-
-      .footer-container__logos {
-        justify-content: flex-end;
-        gap: 1rem;
+        margin-top: 0.5rem;
       }
 
       .footer-container__reseaux {
-        display: none;
+        font-size: 16px;
+        margin: 0.5rem 0;
+      }
+
+      .footer-container__logos {
+        gap: 1.2rem;
+        margin-top: 1rem;
+
+        img {
+          height: 35px;
+          width: 35px;
+          transition: transform 0.2s ease;
+
+          &:hover {
+            transform: scale(1.1);
+          }
+        }
       }
     }
 
-    &__articlemiddle,
+    &__articlemiddle {
+      padding: 1.5rem;
+      min-width: 250px;
+
+      .footer-container__infoSite {
+        font-size: 22px;
+        margin-bottom: 1rem;
+      }
+
+      .footer-container__navs {
+        gap: 1.5rem;
+
+        nav {
+          gap: 0.7rem;
+
+          a {
+            font-size: 14px;
+            padding: 0.4rem 0;
+            transition: color 0.2s ease;
+          }
+        }
+      }
+    }
+
+    &__articleright {
+      padding: 1.5rem;
+      min-width: 200px;
+
+      .footer-container__aide {
+        font-size: 22px;
+        margin-bottom: 1rem;
+      }
+
+      .footer-container__navs {
+        gap: 1.5rem;
+
+        .footer-container__navigation2,
+        .footer-container__navigation3 {
+          gap: 0.7rem;
+
+          a {
+            font-size: 14px;
+            padding: 0.4rem 0;
+            transition: color 0.2s ease;
+          }
+        }
+      }
+    }
+  }
+
+  // Amélioration des titres en tablet
+  h3 {
+    font-size: 1.3rem;
+    margin-top: 1rem;
+
+    span {
+      color: variables.$secondary-color;
+    }
+  }
+}
+
+// Mobile (max-width: 700px)
+@include mixins.mobile {
+  .footer-container {
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem 1rem;
+    gap: 1rem;
+    &__underline{
+      border: 0.5px solid rgb(241, 237, 237);
+      width: 20rem;
+    }
+    &__articleleft {
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem;
+      width: 100%;
+      background: rgba(variables.$primary-color, 0.02);
+      border-radius: 8px;
+
+      .footer-container__figma {
+        text-align: center;
+        padding: 0;
+        margin-bottom: 1rem;
+
+        img {
+          height: 35px;
+          width: 35px;
+        }
+      }
+
+      .footer-container__reseaux {
+        font-size: 14px;
+        margin-bottom: 1rem;
+        color: variables.$text-color;
+        font-weight: 600;
+      }
+
+      .footer-container__logos {
+        justify-content: center;
+        gap: 1.2rem;
+        flex-wrap: wrap;
+
+        a {
+          padding: 0.3rem;
+          border-radius: 50%;
+          transition: all 0.2s ease;
+
+          &:hover {
+            background: rgba(variables.$primary-color, 0.1);
+            transform: translateY(-2px);
+          }
+
+          img {
+            height: 32px;
+            width: 32px;
+          }
+        }
+      }
+    }
+
+    &__articlemiddle {
+      width: 100%;
+      padding: 1rem;
+      background: rgba(variables.$secondary-color, 0.02);
+      border-radius: 8px;
+
+      .footer-container__infoSite {
+        font-size: 18px;
+        margin-bottom: 1rem;
+        text-align: center;
+        color: variables.$brown-color;
+
+        
+      }
+
+      .footer-container__navs {
+        flex-direction:column;
+        gap:0.1rem;
+        align-items: center;
+
+        nav {
+          display:flex;
+          flex-direction:row;
+          gap:1.5rem;
+          justify-content: center;
+          flex-wrap: wrap;
+
+          a {
+            font-size: 13px;
+            padding: 0.5rem 0.8rem;
+            white-space: nowrap;
+
+            &:hover {
+              background: variables.$primary-color;
+              color:variables.$white;
+              transform:translateY(-1px);
+            }
+          }
+        }
+      }
+    }
+
     &__articleright {
       width: 100%;
-      margin-top: 1rem;
+      padding: 1rem;
+      background: rgba(variables.$primary-color, 0.02);
+      border-radius: 8px;
+
+      .footer-container__aide {
+        font-size: 18px;
+        text-align: center;
+        color: variables.$brown-color;
+
+
+       
+      }
+
+      .footer-container__navs {
+       display:flex;
+          flex-direction:row;
+          gap:1.5rem;
+          justify-content:center;
+          flex-wrap: wrap;
+           a {
+            font-size:13px;
+            padding:0.5rem 0.8rem;
+            background:rgba(variables.$white, 0.8);
+            border-radius:20px;
+            border:1px solid rgba(variables.$primary-color, 0.2);
+            transition:all 0.2s ease;
+            white-space:nowrap;
+
+            &:hover {
+              background:variables.$primary-color;
+              color:variables.$white;
+              transform:translateY(-1px);
+            }
+          }
+          
+
+        .footer-container__navigation2,
+        .footer-container__navigation3{
+          display: flex;
+          flex-direction: row;
+          gap: 0.5rem;
+          justify-content: center;
+          flex-wrap: wrap;
+
+          a {
+            font-size: 13px;
+            padding: 0.5rem 0.8rem;
+            background: rgba(variables.$white, 0.8);
+            border-radius: 20px;
+            border: 1px solid rgba(variables.$secondary-color, 0.2);
+            transition: all 0.2s ease;
+            white-space: nowrap;
+
+            &:hover {
+              background: variables.$secondary-color;
+              color: variables.$white;
+              transform: translateY(-1px);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Amélioration des titres en mobile
+  h3 {
+    font-size: 1.1rem;
+    margin-top: 0;
+    font-weight: 600;
+    color: variables.$text-color;
+  }
+
+  // Styles globaux pour les liens en mobile
+  a {
+    font-weight: 500;
+
+    &:active {
+      transform: scale(0.95);
     }
   }
 }

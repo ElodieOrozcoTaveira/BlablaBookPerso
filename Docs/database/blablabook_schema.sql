@@ -33,21 +33,21 @@ DROP TABLE IF EXISTS USER;
 -- =====================================================
 
 -- Table des utilisateurs
-CREATE TABLE USER (
-    id_user INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE "USER" (
+    id_user INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     firstname VARCHAR(100) NOT NULL,
     lastname VARCHAR(100) NOT NULL,
     username VARCHAR(50) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL UNIQUE,
-    password TEXT NOT NULL COMMENT 'Hash Argon2 du mot de passe',
-    connected_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP NULL COMMENT 'Soft delete - NULL si actif'
+    password TEXT NOT NULL, -- Hash Argon2 du mot de passe
+    connected_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMPTZ NULL -- Soft delete - NULL si actif
 ) COMMENT 'Comptes utilisateurs avec authentification Argon2';
 
 -- Table des rôles
 CREATE TABLE ROLE (
-    id_role INT PRIMARY KEY AUTO_INCREMENT,
+    id_role INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE,
     description TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -55,7 +55,7 @@ CREATE TABLE ROLE (
 
 -- Table des permissions
 CREATE TABLE PERMISSION (
-    id_permission INT PRIMARY KEY AUTO_INCREMENT,
+    id_permission INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     label VARCHAR(50) NOT NULL UNIQUE,
     action TEXT NULL COMMENT 'Description de l action autorisée'
 ) COMMENT 'Permissions granulaires du système';
@@ -66,20 +66,20 @@ CREATE TABLE PERMISSION (
 
 -- Table des auteurs
 CREATE TABLE AUTHOR (
-    id_author INT PRIMARY KEY AUTO_INCREMENT,
+    id_author INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     firstname VARCHAR(100) NULL,
     lastname VARCHAR(100) NOT NULL
 ) COMMENT 'Répertoire des auteurs de livres';
 
 -- Table des genres
 CREATE TABLE GENRE (
-    id_genre INT PRIMARY KEY AUTO_INCREMENT,
+    id_genre INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name VARCHAR(100) NOT NULL UNIQUE
 ) COMMENT 'Classification des genres littéraires';
 
 -- Table des livres
 CREATE TABLE BOOK (
-    id_book INT PRIMARY KEY AUTO_INCREMENT,
+    id_book INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     isbn VARCHAR(20) NULL UNIQUE COMMENT 'Code ISBN-10 ou ISBN-13',
     title VARCHAR(500) NOT NULL,
     image BOOLEAN NOT NULL DEFAULT FALSE COMMENT 'Indique si une image est disponible',
@@ -94,7 +94,7 @@ CREATE TABLE BOOK (
 
 -- Table des bibliothèques
 CREATE TABLE LIBRARY (
-    id_library INT PRIMARY KEY AUTO_INCREMENT,
+    id_library INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     id_user INT NOT NULL,
     name VARCHAR(200) NOT NULL UNIQUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -104,7 +104,7 @@ CREATE TABLE LIBRARY (
 
 -- Table des listes de lecture
 CREATE TABLE READING_LIST (
-    id_reading_list INT PRIMARY KEY AUTO_INCREMENT,
+    id_reading_list INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     id_library INT NOT NULL,
     name VARCHAR(200) NOT NULL,
     description TEXT NULL,
@@ -121,7 +121,7 @@ CREATE TABLE READING_LIST (
 
 -- Table des avis
 CREATE TABLE NOTICE (
-    id_notice INT PRIMARY KEY AUTO_INCREMENT,
+    id_notice INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     id_user INT NOT NULL,
     id_book INT NOT NULL,
     comment TEXT NOT NULL,
@@ -131,7 +131,7 @@ CREATE TABLE NOTICE (
 
 -- Table des notes
 CREATE TABLE RATE (
-    id_rate INT PRIMARY KEY AUTO_INCREMENT,
+    id_rate INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     id_user INT NOT NULL,
     id_book INT NOT NULL,
     id_reading_list INT NULL COMMENT 'Note optionnelle sur une liste',
@@ -146,7 +146,7 @@ CREATE TABLE RATE (
 
 -- Liaison utilisateurs-rôles (système RBAC)
 CREATE TABLE USER_ROLE (
-    id_user_role INT PRIMARY KEY AUTO_INCREMENT,
+    id_user_role INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     id_user INT NOT NULL,
     id_role INT NOT NULL,
     UNIQUE KEY uk_user_role (id_user, id_role)
@@ -154,7 +154,7 @@ CREATE TABLE USER_ROLE (
 
 -- Liaison rôles-permissions (système RBAC)
 CREATE TABLE ROLE_PERMISSION (
-    id_permission_role INT PRIMARY KEY AUTO_INCREMENT,
+    id_permission_role INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     id_role INT NOT NULL,
     id_permission INT NOT NULL,
     UNIQUE KEY uk_role_permission (id_role, id_permission)
@@ -162,7 +162,7 @@ CREATE TABLE ROLE_PERMISSION (
 
 -- Liaison livres-bibliothèques
 CREATE TABLE BOOK_LIBRARY (
-    id_book_library INT PRIMARY KEY AUTO_INCREMENT,
+    id_book_library INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     id_library INT NOT NULL,
     id_book INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -171,7 +171,7 @@ CREATE TABLE BOOK_LIBRARY (
 
 -- Liaison livres-listes de lecture
 CREATE TABLE BOOK_IN_LIST (
-    id_book_in_list INT PRIMARY KEY AUTO_INCREMENT,
+    id_book_in_list INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     id_reading_list INT NOT NULL,
     id_book INT NOT NULL,
     UNIQUE KEY uk_book_reading_list (id_reading_list, id_book)
@@ -179,7 +179,7 @@ CREATE TABLE BOOK_IN_LIST (
 
 -- Liaison livres-auteurs
 CREATE TABLE BOOK_AUTHOR (
-    id_book_author INT PRIMARY KEY AUTO_INCREMENT,
+    id_book_author INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     id_book INT NOT NULL,
     id_author INT NOT NULL,
     UNIQUE KEY uk_book_author (id_book, id_author)
@@ -187,7 +187,7 @@ CREATE TABLE BOOK_AUTHOR (
 
 -- Liaison livres-genres
 CREATE TABLE BOOK_GENRE (
-    id_book_genre INT PRIMARY KEY AUTO_INCREMENT,
+    id_book_genre INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     id_book INT NOT NULL,
     id_genre INT NOT NULL,
     UNIQUE KEY uk_book_genre (id_book, id_genre)

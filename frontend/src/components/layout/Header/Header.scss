@@ -1,6 +1,6 @@
-@use '../../../styles/Variables/_variables.scss' as variables;
-@use '../../../styles/Mixins/_mixins.scss' as mixins;
-@use 'sass:color'; // Import du module color de Sass
+@use "../../../styles/Variables/_variables.scss" as variables;
+@use "../../../styles/Mixins/_mixins.scss" as mixins;
+@use "sass:color"; // Import du module color de Sass
 
 .header {
   background-color: variables.$white;
@@ -85,9 +85,21 @@
       @include mixins.button(primary);
     }
 
-    // Style pour le bouton déconnexion
+    // Style pour le bouton déconnexion desktop
     .btn-logout {
       @include mixins.button(danger);
+    }
+
+    // Style pour le bouton déconnexion mobile (icône)
+    .btn-logout-mobile {
+      @include mixins.button(danger);
+      display: none; // Caché par défaut
+      padding: 0.5rem;
+      min-width: auto;
+
+      svg {
+        font-size: 1rem;
+      }
     }
 
     .welcome-user {
@@ -119,7 +131,7 @@
     display: none;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items:center;
     width: 2rem;
     height: 2rem;
     background: transparent;
@@ -195,6 +207,7 @@
     &__burger {
       display: flex;
       order: 2;
+      
     }
 
     &__nav {
@@ -237,7 +250,16 @@
         }
       }
     }
+    // En mobile : cacher le bouton standard et afficher l'icône
+    .btn-logout {
+      display: none;
+    }
 
+    .btn-logout-mobile {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
     &__auth {
       flex: 0 0 auto;
       gap: variables.$gap-sm;
@@ -250,7 +272,8 @@
       }
     }
   }
-}
+  
+  
 
 // Cache les boutons d'auth sur très petits écrans
 @media (max-width: 700px) {
@@ -260,4 +283,5 @@
       display: none;
     }
   }
+}
 }

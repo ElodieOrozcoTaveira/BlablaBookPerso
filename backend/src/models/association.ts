@@ -7,7 +7,7 @@ import { Permissions } from "./Permissions.js";
 import { Rate } from "./Rate.js";
 import { ReadingList } from "./ReadingList.js";
 import { Role } from "./Role.js";
-import { User } from "./user.js";
+import { User } from "./User.js";
 
 //ASSOCIATION MANY TO MANY (N-N)
 
@@ -184,6 +184,16 @@ Books.hasMany(Rate, {
   as: "BookHasManyRate",
 });
 
-
-export { Authors, Books, Notice, Rate, ReadingList, Genre, Permissions, Role, User, Library}
+export {
+  Authors,
+  Books,
+  Notice,
+  Rate,
+  ReadingList,
+  Genre,
+  Permissions,
+  Role,
+  User,
+  Library,
+};
 // l'export n'est pas obligatoire car les models sont déja exportés individuellement

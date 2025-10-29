@@ -7,7 +7,7 @@ graph TD
         A1[👤 Interface utilisateur]
     end
 
-    subgraph Front-End [Front-End SPA - Vue]
+    subgraph Front-End [Front-End SPA - React.js]
         A1 --> FE[🌐 Application Web]
     end
 

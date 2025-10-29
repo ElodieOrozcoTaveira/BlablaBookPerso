@@ -9,10 +9,19 @@ Library.init(
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
+      field: "id_library", // Mapping vers la colonne id_library en BDD
     },
     name: {
       type: DataTypes.STRING(200),
       allowNull: false,
+    },
+    id_user: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: "USER",
+        key: "id_user",
+      },
     },
   },
   {

@@ -4,10 +4,10 @@ services:
       context: ./frontend
       dockerfile: Dockerfile.prod
     image: blablabook-client
-    depends_on:
-      - api
+    command:
+      ["sh", "-c", "cp -r /usr/share/nginx/html/* /shared/ && sleep infinity"]
     volumes:
-      - client_dist:/app/dist
+      - client_dist:/shared
 
   api:
     build:

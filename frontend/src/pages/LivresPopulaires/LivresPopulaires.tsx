@@ -62,7 +62,7 @@ export default function PopularBooks() {
       id: book.openLibraryId,
       title: book.title,
       authors: booksApi.utils.formatAuthors(book.authors),
-      cover_url: 0, // Le store attend un number, on met 0 par défaut
+      cover_url: book.coverUrl || "/placeholder-book.png", // Le store attend une string, URL par défaut
       publication_year: book.publishYear || 0,
       isbn: book.isbn13 || book.isbn10,
       description: book.description,

@@ -1,9 +1,7 @@
-import { describe, it, expect } from "@jest/globals";
+import { describe, it, expect } from 'vitest';
 import { z } from "zod";
 
-/**
- * TESTS UNITAIRES SIMPLES - Validations Zod
- */
+
 
 // Import des schémas de validation
 const registerSchema = z.object({

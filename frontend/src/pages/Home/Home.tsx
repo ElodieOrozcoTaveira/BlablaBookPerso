@@ -111,13 +111,50 @@ export default function Home() {
   };
 
   // Ajouter à "Mes Livres" (collection générale)
-  const handleAddToMyBooks = (book: Book) => {
+  const handleAddToMyBooks = async (book: Book) => {
     if (!user) {
       navigate("/login");
       return;
     }
-    addBook(book);
-    navigate("/MesLivres");
+
+    try {
+      console.log("📚 Ajout du livre depuis le carrousel:", book);
+
+      // 1. Sauvegarder en base de données via l'API
+      if (book.open_library_key) {
+        const response = await booksApi.saveBook({
+          openLibraryId: book.open_library_key,
+          status: "to_read",
+        });
+        console.log("✅ Livre sauvegardé en BDD:", response);
+
+        // 2. Ajouter au store local avec les données de la BDD
+        const savedBookData = response.data;
+        addBook({
+          id: savedBookData.id?.toString() || book.open_library_key,
+          title: savedBookData.title || book.title,
+          authors: savedBookData.authors || book.authors,
+          cover_url: savedBookData.cover_url || book.cover_url,
+          publication_year:
+            savedBookData.publication_year || book.publication_year,
+          isbn: book.isbn,
+          description: book.description,
+          open_library_key: book.open_library_key,
+        });
+      } else {
+        // Fallback: ajouter seulement au store local si pas d'open_library_key
+        console.warn("⚠️ Pas d'open_library_key, ajout local uniquement");
+        addBook(book);
+      }
+
+      navigate("/MesLivres");
+    } catch (error: any) {
+      console.error("❌ Erreur lors de l'ajout du livre:", error);
+
+      // En cas d'erreur, ajouter quand même au store local
+      addBook(book);
+      navigate("/MesLivres");
+    }
   };
 
   // Ajouter à une liste spécifique
@@ -184,7 +221,7 @@ export default function Home() {
   return (
     <>
       <HomeHeader />
-      <BookSearch/>
+      <BookSearch />
       <section className="home__section">
         <h2>Livres Populaires</h2>
         {loading ? (
@@ -270,7 +307,8 @@ export default function Home() {
                               authors: booksApi.utils.formatAuthors(
                                 book.authors
                               ),
-                              cover_url: 0, // Le store attend un number
+                              cover_url:
+                                book.coverUrl || "/book-placeholder.svg",
                               publication_year: book.publishYear || 0,
                               isbn: book.isbn13 || book.isbn10,
                               description: book.description,
@@ -294,7 +332,8 @@ export default function Home() {
                               authors: booksApi.utils.formatAuthors(
                                 book.authors
                               ),
-                              cover_url: 0, // Le store attend un number
+                              cover_url:
+                                book.coverUrl || "/book-placeholder.svg",
                               publication_year: book.publishYear || 0,
                               isbn: book.isbn13 || book.isbn10,
                               description: book.description,

@@ -9,6 +9,8 @@ RolePermission.init(
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
+            field: 'id_permission_role', // Mapping vers la colonne id_permission_role en BDD
+
     },
     id_role: {
       type: DataTypes.INTEGER,

@@ -174,18 +174,20 @@ sequenceDiagram
     participant Backend
     participant BDD
 
-    Utilisateur->>Frontend: saisir l'identifiants(email, mdp)
+    Utilisateur->>Frontend: saisir les identifiants (email, mdp)
     Frontend->>Backend: POST /login {email, mdp}
-    Backend->>BDD: Recherche l'utilisateur en bdd
+    Backend->>BDD: rechercher l'utilisateur en base
     BDD-->>Backend: utilisateur trouvé (ou non)
-    Backend->>Backend: vérifier mot de passe hashé
+    Backend->>Backend: vérifier le mot de passe hashé
     alt Identifiants valides
-        Backend-->>Frontend: 200 OK + token session
-        Frontend-->>Utilisateur: redirection vers Biblotheque
+        Backend-->>Frontend: 200 OK + session cookie
+        note right of Backend: Génération du token ou cookie de session
+        Frontend-->>Utilisateur: redirection vers la Bibliothèque
     else Identifiants invalides
         Backend-->>Frontend: 401 Unauthorized
-        Frontend-->>Utilisateur: afficher erreur
+        Frontend-->>Utilisateur: afficher un message d'erreur
     end
+
 ```
 
 ### Inscription

@@ -9,6 +9,7 @@ Genre.init(
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
+      field: 'id_genre', // Mapping vers la colonne id_genre en BDD
     },
     name: {
       type: DataTypes.STRING(100),

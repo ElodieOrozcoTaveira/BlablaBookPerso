@@ -9,6 +9,8 @@ UserRole.init(
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
+            field: 'id_user_role', // Mapping vers la colonne id_user_role en BDD
+
     },
     id_user: {
       type: DataTypes.INTEGER,

@@ -1,7 +1,7 @@
 import { sequelize } from "../db/sequelize.js";
 
 // Import des modèles
-import { User } from "../models/user.js";
+import { User } from "../models/User.js";
 import { Role } from "../models/Role.js";
 import { Permissions } from "../models/Permissions.js";
 import { Authors } from "../models/Authors.js";

@@ -9,6 +9,8 @@ Notice.init(
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
+            field: 'id_notice', // Mapping vers la colonne id_notice en BDD
+
     },
     comment: {
       type: DataTypes.TEXT, //text pour du plus de caractères

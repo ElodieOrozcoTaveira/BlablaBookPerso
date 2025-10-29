@@ -9,6 +9,7 @@ Books.init(
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
+      field: "id_book", // Mapping vers la colonne id_book en BDD
     },
     isbn: {
       type: DataTypes.STRING(20),
@@ -25,6 +26,11 @@ Books.init(
       allowNull: false,
       defaultValue: false,
       comment: "Indique si une image est disponible",
+    },
+    cover_url: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+      comment: "URL de la couverture du livre",
     },
     summary: {
       type: DataTypes.TEXT,

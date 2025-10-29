@@ -9,6 +9,8 @@ ReadingList.init(
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
+            field: 'id_reading_list', // Mapping vers la colonne id_reading_list en BDD
+
     },
     name: {
       type: DataTypes.STRING(200),

@@ -9,6 +9,7 @@ Authors.init(
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
+      field: "id_author", // Mapping vers la colonne id_author en BDD
     },
     firstname: {
       type: DataTypes.STRING(100),

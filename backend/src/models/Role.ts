@@ -9,6 +9,8 @@ Role.init(
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
+            field: 'id_role', // Mapping vers la colonne id_role en BDD
+
     },
     name: {
       type: DataTypes.STRING(50),

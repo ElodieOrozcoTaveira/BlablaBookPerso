@@ -17,10 +17,10 @@ export default function Footer() {
                     <a href="https://fr.linkedin.com/"><img src="/logos/linkedin.webp" alt="linkedin logo" className="footer-container__img" /></a>
                 </div>
             </article>
-
+                <div className="footer-container__underline"></div>
             <article className="footer-container__articlemiddle">
                 <div className="footer-container__useCases">
-                    <h3 className="footer-container__infoSite">I<span>nformations sur le sit</span>e</h3>
+                    <h3 className="footer-container__infoSite">Informations sur le site</h3>
                     <div className="footer-container__navs">
                 <nav className="footer-container__navigation">
 
@@ -37,7 +37,7 @@ export default function Footer() {
 
              <article className="footer-container__articleright">
                 <div className="footer-container__explore">
-                <h3 className="footer-container__aide">C<span>entre d'Aid</span>e</h3>
+                <h3 className="footer-container__aide">Centre d'Aide</h3>
                 <div className="footer-container__navs">
                     <nav className="footer-container__navigation2">
                     <a onClick={()=>navigate(`/FAQ`)} href="#" className="footer-container__link">FAQ</a>

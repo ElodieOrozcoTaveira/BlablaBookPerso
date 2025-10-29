@@ -26,7 +26,7 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ isLoading: true });
     try {
       const response = await axios.get("/api/auth/check-session", {
-        withCredentials: true,
+        withCredentials: true, //essentiel pour que l'auth par session redis fonctionne entre le front et le back.
       });
 
       set({

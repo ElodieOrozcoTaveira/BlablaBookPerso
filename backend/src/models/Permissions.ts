@@ -9,6 +9,8 @@ Permissions.init(
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,
+            field: 'id_permission', // Mapping vers la colonne id_persmission en BDD
+
     },
     label: {
       type: DataTypes.STRING(50),

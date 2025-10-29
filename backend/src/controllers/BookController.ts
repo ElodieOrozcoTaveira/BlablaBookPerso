@@ -145,6 +145,7 @@ export class BookController {
   ): Promise<void> {
     try {
       const sessionUser = req.session.user;
+      console.log("🔍 Session user:", sessionUser);
       if (!sessionUser) {
         res.status(401).json({
           success: false,
@@ -153,6 +154,8 @@ export class BookController {
         });
         return;
       }
+
+      console.log("👤 User ID:", sessionUser.id);
 
       const { openLibraryId, status = "to_read" } = req.body;
 
@@ -221,69 +224,16 @@ export class BookController {
         return;
       }
 
-      // Importer les modèles et associations
-      await import("../models/association.js");
-      const { User } = await import("../models/user.js");
-      const { Library } = await import("../models/Library.js");
-      const { Books } = await import("../models/Books.js");
-
-      // Récupérer l'utilisateur avec ses bibliothèques et leurs livres
-      const user = await User.findByPk(userId, {
-        include: [
-          {
-            model: Library,
-            as: "UserHasManyLibrary",
-            include: [
-              {
-                model: Books,
-                as: "libraryhasbook",
-                through: { attributes: [] }, // Exclure les attributs de la table de liaison
-              },
-            ],
-          },
-        ],
-      });
-
-      if (!user) {
-        res.status(404).json({
-          success: false,
-          message: "Utilisateur introuvable",
-          code: "USER_NOT_FOUND",
-        });
-        return;
-      }
-
-      // Extraire tous les livres de toutes les bibliothèques de l'utilisateur
-      const allBooks: any[] = [];
-      if (user.get("UserHasManyLibrary")) {
-        const libraries = user.get("UserHasManyLibrary") as any[];
-        libraries.forEach((library) => {
-          if (library.libraryhasbook) {
-            allBooks.push(...library.libraryhasbook);
-          }
-        });
-      }
-
-      // Transformer les données en format OpenLibrary
-      const formattedBooks = allBooks.map((book) => ({
-        title: book.title,
-        authors: [], // TODO: Récupérer les auteurs si besoin
-        isbn13: book.isbn,
-        publishYear: book.published_at
-          ? new Date(book.published_at).getFullYear()
-          : undefined,
-        pageCount: book.nb_pages,
-        subjects: [],
-        coverUrl: book.image || undefined, // Utiliser l'URL directement
-        openLibraryId: `/books/${book.id}`,
-        description: book.summary,
-      }));
+      // Utiliser notre méthode BookService qui fonctionne
+      console.log(`🎯 Contrôleur getUserLibrary - userId: ${userId}`);
+      const books = await BookService.getUserLibrary(userId);
+      console.log(`📋 Books récupérés par BookService:`, books);
 
       res.status(200).json({
         success: true,
-        data: formattedBooks,
+        data: books,
         message: "Bibliothèque récupérée avec succès",
-        total: formattedBooks.length,
+        total: books.length,
       });
     } catch (error) {
       console.error("❌ Erreur récupération bibliothèque:", error);
@@ -327,7 +277,7 @@ export class BookController {
       }
 
       // Importer les modèles nécessaires
-      const { User } = await import("../models/user.js");
+      const { User } = await import("../models/User.js");
       const { Library } = await import("../models/Library.js");
       const { Books } = await import("../models/Books.js");
       const { sequelize } = await import("../db/sequelize.js");
@@ -433,7 +383,7 @@ export class BookController {
       }
 
       // Importer les modèles nécessaires
-      const { User } = await import("../models/user.js");
+      const { User } = await import("../models/User.js");
       const { Library } = await import("../models/Library.js");
       const { Books } = await import("../models/Books.js");
       const { sequelize } = await import("../db/sequelize.js");

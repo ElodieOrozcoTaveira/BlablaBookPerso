@@ -75,11 +75,18 @@ class OpenLibraryService {
       // Récupération des auteurs si nécessaire
       let authors: string[] = [];
       if (book.authors && book.authors.length > 0) {
-        const authorPromises = book.authors.map((author: any) =>
-          axios.get(`${this.baseUrl}${author.author.key}.json`)
-        );
-        const authorResponses = await Promise.all(authorPromises);
-        authors = authorResponses.map((res) => res.data.name);
+        const authorPromises = book.authors
+          .filter((author: any) => author && (author.author?.key || author.key)) // Filtrer les auteurs valides
+          .map((author: any) => {
+            // Gérer les deux formats possibles
+            const authorKey = author.author?.key || author.key;
+            return axios.get(`${this.baseUrl}${authorKey}.json`);
+          });
+
+        if (authorPromises.length > 0) {
+          const authorResponses = await Promise.all(authorPromises);
+          authors = authorResponses.map((res) => res.data.name).filter(Boolean);
+        }
       }
 
       return {

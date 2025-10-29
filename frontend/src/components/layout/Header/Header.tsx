@@ -1,9 +1,10 @@
 // src/components/layout/Header/Header.tsx
-import { useState, useEffect } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../../../store/authStore';
-import './Header.scss';
-import logo from '@/assets/blablaNoBg-logo.png';
+import { useState, useEffect } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../../store/authStore";
+import "./Header.scss";
+import logo from "@/assets/blablaNoBg-logo.png";
+import { FaPowerOff } from "react-icons/fa";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,7 +23,7 @@ export default function Header() {
   const handleLogout = async (): Promise<void> => {
     await logout();
     closeMenu();
-    navigate('/');
+    navigate("/");
   };
 
   return (
@@ -44,14 +45,14 @@ export default function Header() {
           <span />
         </button>
 
-        <nav className={`header__nav ${isMenuOpen ? 'header__nav--open' : ''}`}>
+        <nav className={`header__nav ${isMenuOpen ? "header__nav--open" : ""}`}>
           <ul>
             <li>
               <NavLink
                 to="/"
                 onClick={closeMenu}
                 className={({ isActive }) =>
-                  isActive ? 'nav-link nav-link--active' : 'nav-link'
+                  isActive ? "nav-link nav-link--active" : "nav-link"
                 }
               >
                 Accueil
@@ -65,7 +66,7 @@ export default function Header() {
                     to="/library"
                     onClick={closeMenu}
                     className={({ isActive }) =>
-                      isActive ? 'nav-link nav-link--active' : 'nav-link'
+                      isActive ? "nav-link nav-link--active" : "nav-link"
                     }
                   >
                     Ma Bibliothèque
@@ -76,7 +77,7 @@ export default function Header() {
                     to="/profile"
                     onClick={closeMenu}
                     className={({ isActive }) =>
-                      isActive ? 'nav-link nav-link--active' : 'nav-link'
+                      isActive ? "nav-link nav-link--active" : "nav-link"
                     }
                   >
                     Mon Profil
@@ -95,6 +96,14 @@ export default function Header() {
               <span className="welcome-user">Bonjour {user.username} !</span>
               <button onClick={handleLogout} className="btn btn-logout">
                 Déconnexion
+              </button>
+              <button
+                onClick={handleLogout}
+                className="btn btn-logout-mobile"
+                aria-label="Déconnexion"
+                title="Déconnexion"
+              >
+                <FaPowerOff />
               </button>
             </>
           ) : (
