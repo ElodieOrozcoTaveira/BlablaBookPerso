@@ -1,16 +1,6 @@
 import { sequelize } from "../db/sequelize.js";
 
 // Import de tous les modèles pour les créer à partir du script de création de tables
-import { User } from "../models/User.js";
-import { Role } from "../models/Role.js";
-import { Permissions } from "../models/Permissions.js";
-import { Authors } from "../models/Authors.js";
-import { Genre } from "../models/Genre.js";
-import { Books } from "../models/Books.js";
-import { Library } from "../models/Library.js";
-import { ReadingList } from "../models/ReadingList.js";
-import { Notice } from "../models/Notice.js";
-import { Rate } from "../models/Rate.js";
 
 // Import des associations pour créer les relations
 import "../models/association.js";

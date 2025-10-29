@@ -1,5 +1,4 @@
 import { UserRole } from "../models/UserRole.js";
-import { Op } from "sequelize";
 
 /**
  * SERVICE DES RÔLES UTILISATEURS

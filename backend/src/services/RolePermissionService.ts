@@ -1,5 +1,4 @@
 import { RolePermission } from "../models/RolePermission.js";
-import { Op } from "sequelize";
 
 /**
  * SERVICE DES PERMISSIONS DE RÔLES

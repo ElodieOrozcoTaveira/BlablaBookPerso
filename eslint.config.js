@@ -1,159 +1,175 @@
 // eslint.config.js
-import eslint from '@eslint/js';
-import tsPlugin from '@typescript-eslint/eslint-plugin';
-import tsParser from '@typescript-eslint/parser';
-import reactPlugin from 'eslint-plugin-react';
-import reactHooksPlugin from 'eslint-plugin-react-hooks';
-import securityPlugin from 'eslint-plugin-security';
-import unusedImportsPlugin from 'eslint-plugin-unused-imports';
+import eslint from "@eslint/js";
+import tsPlugin from "@typescript-eslint/eslint-plugin";
+import tsParser from "@typescript-eslint/parser";
+import reactPlugin from "eslint-plugin-react";
+import reactHooksPlugin from "eslint-plugin-react-hooks";
+import securityPlugin from "eslint-plugin-security";
+import unusedImportsPlugin from "eslint-plugin-unused-imports";
 
 export default [
   eslint.configs.recommended,
   {
-    files: ['backend/**/*.ts', 'backend/**/*.tsx'],
+    // Ignorer les fichiers compilés et autres
+    ignores: [
+      "**/node_modules/**",
+      "**/dist/**",
+      "**/build/**",
+      "**/*.d.ts",
+      "**/*.js.map",
+      "**/*.d.ts.map",
+      "backend/**/*.js",
+      "frontend/dist/**",
+      "backend/dist/**",
+      "**/.env*",
+      "**/coverage/**",
+    ],
+  },
+  {
+    files: ["backend/**/*.ts", "backend/**/*.tsx"],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
         ecmaVersion: 2022,
-        sourceType: 'module',
-        project: './backend/tsconfig.json',
+        sourceType: "module",
+        project: "./backend/tsconfig.json",
       },
       globals: {
-        process: 'readonly',
-        Buffer: 'readonly',
-        require: 'readonly',
-        module: 'readonly',
-        exports: 'readonly',
-        __dirname: 'readonly',
-        __filename: 'readonly',
-        console: 'readonly',
+        process: "readonly",
+        Buffer: "readonly",
+        require: "readonly",
+        module: "readonly",
+        exports: "readonly",
+        __dirname: "readonly",
+        __filename: "readonly",
+        console: "readonly",
       },
     },
     plugins: {
-      '@typescript-eslint': tsPlugin,
+      "@typescript-eslint": tsPlugin,
       security: securityPlugin,
-      'unused-imports': unusedImportsPlugin,
+      "unused-imports": unusedImportsPlugin,
     },
     rules: {
-      'unused-imports/no-unused-imports': 'warn',
-      'unused-imports/no-unused-vars': [
-        'warn',
+      "unused-imports/no-unused-imports": "warn",
+      "unused-imports/no-unused-vars": [
+        "warn",
         {
-          vars: 'all',
-          varsIgnorePattern: '^_',
-          args: 'none',
-          argsIgnorePattern: '^_',
+          vars: "all",
+          varsIgnorePattern: "^_",
+          args: "none",
+          argsIgnorePattern: "^_",
         },
       ],
-      '@typescript-eslint/no-unused-vars': [
-        'warn',
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
         {
-          vars: 'all',
-          varsIgnorePattern: '^_',
-          args: 'none',
-          argsIgnorePattern: '^_',
+          vars: "all",
+          varsIgnorePattern: "^_",
+          args: "none",
+          argsIgnorePattern: "^_",
         },
       ],
     },
   },
   {
-    files: ['frontend/**/*.{ts,tsx}'],
+    files: ["frontend/**/*.{ts,tsx}"],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
         ecmaVersion: 2022,
-        sourceType: 'module',
-        project: './frontend/tsconfig.app.json',
+        sourceType: "module",
+        project: "./frontend/tsconfig.app.json",
         ecmaFeatures: {
           jsx: true,
         },
       },
       globals: {
-        window: 'readonly',
-        document: 'readonly',
-        console: 'readonly',
-        fetch: 'readonly',
-        setTimeout: 'readonly',
-        alert: 'readonly',
+        window: "readonly",
+        document: "readonly",
+        console: "readonly",
+        fetch: "readonly",
+        setTimeout: "readonly",
+        alert: "readonly",
       },
     },
     plugins: {
-      '@typescript-eslint': tsPlugin,
+      "@typescript-eslint": tsPlugin,
       react: reactPlugin,
-      'react-hooks': reactHooksPlugin,
-      'unused-imports': unusedImportsPlugin,
+      "react-hooks": reactHooksPlugin,
+      "unused-imports": unusedImportsPlugin,
     },
     rules: {
-      'react/react-in-jsx-scope': 'off',
-      'react/prop-types': 'off',
-      'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'warn',
-      'unused-imports/no-unused-imports': 'warn',
-      'unused-imports/no-unused-vars': [
-        'warn',
+      "react/react-in-jsx-scope": "off",
+      "react/prop-types": "off",
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
+      "unused-imports/no-unused-imports": "warn",
+      "unused-imports/no-unused-vars": [
+        "warn",
         {
-          vars: 'all',
-          varsIgnorePattern: '^_',
-          args: 'none',
-          argsIgnorePattern: '^_',
+          vars: "all",
+          varsIgnorePattern: "^_",
+          args: "none",
+          argsIgnorePattern: "^_",
         },
       ],
-      '@typescript-eslint/no-unused-vars': [
-        'warn',
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
         {
-          vars: 'all',
-          varsIgnorePattern: '^_',
-          args: 'none',
-          argsIgnorePattern: '^_',
+          vars: "all",
+          varsIgnorePattern: "^_",
+          args: "none",
+          argsIgnorePattern: "^_",
         },
       ],
     },
     settings: {
       react: {
-        version: 'detect',
+        version: "detect",
       },
     },
   },
   {
-    files: ['frontend/vite.config.ts', 'frontend/vitest.config.ts'],
+    files: ["frontend/vite.config.ts", "frontend/vitest.config.ts"],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
         ecmaVersion: 2022,
-        sourceType: 'module',
-        project: './frontend/tsconfig.node.json',
+        sourceType: "module",
+        project: "./frontend/tsconfig.node.json",
       },
     },
   },
   {
-    files: ['**/*.test.{ts,tsx}', '**/__tests__/**/*.{ts,tsx}'],
+    files: ["**/*.test.{ts,tsx}", "**/__tests__/**/*.{ts,tsx}"],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
         ecmaVersion: 2022,
-        sourceType: 'module',
-        project: ['./frontend/tsconfig.app.json', './backend/tsconfig.json'],
+        sourceType: "module",
+        project: ["./frontend/tsconfig.app.json", "./backend/tsconfig.json"],
       },
       globals: {
-        window: 'readonly',
-        document: 'readonly',
-        describe: 'readonly',
-        it: 'readonly',
-        expect: 'readonly',
-        beforeEach: 'readonly',
-        afterEach: 'readonly',
-        vi: 'readonly',
+        window: "readonly",
+        document: "readonly",
+        describe: "readonly",
+        it: "readonly",
+        expect: "readonly",
+        beforeEach: "readonly",
+        afterEach: "readonly",
+        vi: "readonly",
       },
     },
     plugins: {
-      '@typescript-eslint': tsPlugin,
-      'unused-imports': unusedImportsPlugin,
+      "@typescript-eslint": tsPlugin,
+      "unused-imports": unusedImportsPlugin,
     },
     rules: {
       // règles spécifiques aux tests si besoin
     },
   },
   {
-    ignores: ['node_modules/**', 'dist/**', '*.js', '*.d.ts', 'coverage/**'],
+    ignores: ["node_modules/**", "dist/**", "*.js", "*.d.ts", "coverage/**"],
   },
 ];
